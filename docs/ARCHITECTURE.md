@@ -128,3 +128,6 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
   utökad med title/description/Open Graph/canonical + JSON-LD `["HairSalon","BeautySalon"]`
   (avsiktligt UTAN openingHours, priceRange och aggregateRating — ej bekräftat av ägaren), samt
   Trossö-mention i hero-texten.
+- 2026-10-03 MC 10024.1 (DA-c6 F4) — `hosting.yaml` title/description synkade till den shippeda
+  SEO-headen (commit f4fd762): deklarationsträngarna är byte-exakt lika `index.html`-`<title>`
+  respektive `meta[name=description]`, så reconcilerns indexkopia == sidans kopia.

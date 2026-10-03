@@ -26,7 +26,7 @@ Project intent: real site, frontend-first — backend explicitly deferred (below
 | `js/gallery.js` | före/efter-galleri (horisontell scroll), placeholder-kort, bild-in-byte via manifest |
 | `js/booking-mock.js` | "Boka tid"-kalender MOCK (Hotell-mönster, se Reuse); CTA telefon/IG |
 | `js/contact-form.js` | klientvalidering + väntande-tillstånd; ingen dispatch |
-| `images/` | placeholder-bilder (byts till riktiga utan markup-ändring) |
+| `images/` | ägarlevererade foton `gal-01`–`gal-04` (provens i `images/README.md`, byte-exakta kopior) + reserverade platshållarslots 5–6 (fler bilder väntas från ägaren); ny bild = fil i den här mappen + manifest-rad, ingen markup-ändring |
 | `DESIGN.md` (rot) | design-spec DIRECTION/TOKENS/LAYOUT — skrivs av frontend-fasen |
 | `hosting.yaml` (rot) | vm106-hostningdeklaration (strict JSON, statisk — ingen port); konsumeras av fleet-reconcilern, laddas EJ av sajten |
 
@@ -110,3 +110,7 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
 - 2026-10-03 MC 3934.7 — pre-publish pass: `hosting.yaml` added (vm106 static hosting, name
   `anny`, validator PASS), images/README provenance corrected (salong-tillhörighet avmarkerad som
   ej verifierad), exec-bitar borttagna ur `images/*.jpeg`.
+- 2026-10-03 MC 3934.5-close — architect closing pass: dokument-vs-träd verifierat (moduler,
+  entrypoint, dependencies, ports, stores, B1/B2, C1–C4 inkl. C3-undantaget — allesamt
+  överensstämmande). `images/`-raden i modultabellen uppdaterad till verkligheten (4
+  ägarlevererade foton `gal-01`–`gal-04` + platshållarslots 5–6 väntas); i övrigt NO DRIFT.

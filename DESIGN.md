@@ -80,12 +80,13 @@ anchor nav + IG link. Container: 100% / max 1120px / 16px inline padding (32px �
   template** (I3, Hotell defect 1 not copied). Slots: `Ledig` = `#e7e5e4` + `#1c1917` (13.93:1),
   `Upptagen` (mock) = `#44403c` + `#fafaf9` (9.84:1). Section is labelled demo (I2).
 - **Booking modal**: native `<dialog>` (Esc, focus-trap, backdrop), slot-select → confirm view →
-  honest demo view stating real booking goes via telefon/Instagram (phone field pending-owner,
-  IG `@mullers.anny` linked). Fully styled confirm/success state incl. visible "Stäng" button
+  honest demo view stating real booking goes via telefon/Instagram (telefon `072-155 48 60` and
+  IG `@mullers.anny`, both linked). Fully styled confirm/success state incl. visible "Stäng" button
   (I4, Hotell defect 2 not copied). **Never claims a booking happened.**
 - **Kontakt**: form (namn/e-post/meddelande, client validation) + address block
-  (Landbrogatan 11, 371 35 Karlskrona — VERIFIED); telefon/öppettider/e-post fields empty +
-  pending-owner comments (I1). Submit → persistent honest pending note (I2).
+  (Landbrogatan 11, 371 35 Karlskrona — VERIFIED); telefon + e-post are owner-supplied values
+  linked `tel:`/`mailto:` (MC 10024.1, 2026-10-03); öppettider stays pending-owner commented (I1).
+  Submit → persistent honest pending note (I2).
 - **Footer**: name, address, IG link (nav + footer per facts rule), nav anchors.
 - Breakpoints 768/1024px only; 375px is the design target for calendar + gallery scroll.
 

@@ -15,7 +15,8 @@ Konvention (redan förberedd i `index.html` + `js/gallery.js`):
 | `gal-05.jpeg` | Gallerikort "Bal" |
 | `gal-06.jpeg` | Gallerikort "Skäggtrim" |
 
-Lägg bara filen på rätt namn — gallerikortet byter platshållaren mot bilden
-automatiskt (`data-img-slot` + HEAD-check i `gallery.js`). Ingen markup-
-ändring behövs. Porträtt till "Om mig": `portrait.jpeg` (platshållarkortet
+Lägg filen på rätt namn OCH lägg till dess sökväg i listan i
+`js/gallery-manifest.js` (`window.ANNY_GALLERY_IMAGES`) — då byter
+gallerikortet platshållaren mot bilden (`data-img-slot` + manifestrad; ingen
+HEAD-check, inga 404:or för saknade filer). Ingen markup-ändring behövs. Porträtt till "Om mig": `portrait.jpeg` (platshållarkortet
 uppdateras till `<img>` av en senare fas när bilden finns).

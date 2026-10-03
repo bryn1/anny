@@ -21,8 +21,9 @@ Project intent: real site, frontend-first — backend explicitly deferred (below
 | `css/tokens.css` | design tokens som CSS custom properties (palett, typografi, spacing) |
 | `css/layout.css` | pageskelett, sektionsflyt, breakpoints (rör ej kalender-gridden) |
 | `css/components.css` | komponentstilar inkl. kalender-mock, modal, formulär, bekräftelse-tillstånd |
-| `js/scroll-reveal.js` | scroll-reveal (IntersectionObserver), hero-ordbygge, reduced-motion |
-| `js/gallery.js` | före/efter-galleri (horisontell scroll), placeholder-kort |
+| `js/scroll-reveal.js` | scroll-reveal (IntersectionObserver), hero-ordbygge (auto-kompletteras i vila), reduced-motion |
+| `js/gallery-manifest.js` | galleriets bildmanifest — deklarerar vilka bildfiler som faktiskt finns (seam; C3-undantaget) |
+| `js/gallery.js` | före/efter-galleri (horisontell scroll), placeholder-kort, bild-in-byte via manifest |
 | `js/booking-mock.js` | "Boka tid"-kalender MOCK (Hotell-mönster, se Reuse); CTA telefon/IG |
 | `js/contact-form.js` | klientvalidering + väntande-tillstånd; ingen dispatch |
 | `images/` | placeholder-bilder (byts till riktiga utan markup-ändring) |
@@ -91,7 +92,9 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
 - **C2** CSS load order in `index.html`: `tokens.css → layout.css → components.css` (I3 leans on
   this — the order IS an invariant for the calendar-grid rule, a convention otherwise).
 - **C3** Each JS module: `defer`, one concern, no shared globals, markup contact only via
-  `data-*` hooks.
+  `data-*` hooks. *Sole sanctioned exception (MC 3934.3 c2):* `js/gallery-manifest.js` declares
+  the read-only `window.ANNY_GALLERY_IMAGES` inventory, loaded before `gallery.js` (defer order)
+  and only ever read by it — the no-404 photo seam replacing the v1 HEAD-probe.
 - **C4** Calendar markup follows the Hotell shell shape (single `.calendar-grid`-style container;
   header/body/rows sharing one template; horizontal-scroll wrapper on mobile) with anny's own
   class names.
@@ -99,3 +102,7 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
 ## History
 
 - 2026-10-02 MC 3934.2 — created; Hotell calendar-pattern reuse added same run per owner steer.
+- 2026-10-03 MC 3934.3 c2 — QA fix round: malformed `data-reveal"` markup repaired (17 elements,
+  the reveal-contract P0), hero build auto-completes at rest, gallery HEAD-probe replaced by the
+  `js/gallery-manifest.js` seam (zero console 404s, C3 exception above), inline data-URI favicon,
+  invalid form submit replaces the stale aria-live status.

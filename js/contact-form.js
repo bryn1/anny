@@ -63,7 +63,13 @@
     });
 
     if (!allOk) {
-      if (status) status.hidden = true;
+      /* QA P2 (MC 3934.3 c2): a rejected submit must not leave a stale
+       * "Tack..." text in the aria-live region — replace it so the
+       * announcement matches the on-screen field errors. */
+      if (status) {
+        status.textContent = 'Åtgärda de markerade fälten ovan.';
+        status.hidden = false;
+      }
       if (firstBad) firstBad.focus();
       return;
     }

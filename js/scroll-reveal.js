@@ -1,6 +1,8 @@
 /* scroll-reveal.js — one concern: scroll-driven reveals.
  * 1) Hero title "Anny Morin — Frisör Karlskrona" builds word-by-word from the
  *    hero's scroll progress (research pattern: brand builds as you scroll).
+ *    A resting page never shows a truncated title: at scroll 0 the build
+ *    auto-completes ~0.8s after load and then stays complete (QA P1, c2).
  * 2) [data-reveal] elements fade/slide in once via IntersectionObserver.
  * prefers-reduced-motion (I5): everything is shown instantly, no observer,
  * no progress logic. Markup contact only via data-* hooks + state classes. */
@@ -58,12 +60,13 @@
   function wireHeroBuild() {
     var hero = heroTitle.closest('section') || heroTitle.parentElement;
     var ticking = false;
+    var completed = false;
 
     function onScroll() {
-      if (ticking) return;
+      if (ticking || completed) return;
       ticking = true;
       window.requestAnimationFrame(function () {
-        updateHeroProgress(hero);
+        if (!completed) updateHeroProgress(hero);
         ticking = false;
       });
     }
@@ -71,6 +74,15 @@
     updateHeroProgress(hero);
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
+
+    /* At-rest guarantee (QA P1, MC 3934.3 c2): scroll may carry the build,
+     * but a page at rest must never sit on a truncated H1 — auto-complete
+     * shortly after load and freeze the completed state (scroll no longer
+     * re-hides words). */
+    window.setTimeout(function () {
+      completed = true;
+      setWordsVisible(words.length);
+    }, 800);
 
     /* Jumped past the hero (anchor link): show the full name. */
     if ('IntersectionObserver' in window) {

@@ -5,11 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Anny Morin — Frisör Karlskrona</title>
 <meta name="description" content="Anny Morin, frisör i Karlskrona. Klippning, färg, vård, bröllop och bal på Müllers., Landbrogatan 11.">
+<!-- Inline data-URI favicon (QA P3): noll favicon-förfrågan/404, ingen ny fil. -->
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%239a3f1f"/><text x="16" y="23" font-family="Georgia,serif" font-size="19" font-weight="bold" text-anchor="middle" fill="%23ffffff">A</text></svg>'>
 <!-- CSS load order is an invariant (C2): tokens -> layout -> components -->
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 <script defer src="js/scroll-reveal.js"></script>
+<!-- gallery-manifest.js före gallery.js (defer-ordning = exekveringsordning):
+     manifesten deklarerar vilka gallerifiler som faktiskt finns. -->
+<script defer src="js/gallery-manifest.js"></script>
 <script defer src="js/gallery.js"></script>
 <script defer src="js/booking-mock.js"></script>
 <script defer src="js/contact-form.js"></script>
@@ -39,11 +44,11 @@
   <!-- ===== Hero: namnet byggs ord för ord vid scroll (scroll-reveal.js) ===== -->
   <section class="hero" id="top" aria-label="Välkommen">
     <div class="container">
-      <p class="section-eyebrow reveal" data-reveal">Frisör i Karlskrona</p>
+      <p class="section-eyebrow reveal" data-reveal>Frisör i Karlskrona</p>
       <h1 class="hero-title" data-hero-title>Anny Morin — Frisör Karlskrona</h1>
-      <p class="hero-sub reveal" data-reveal">Klippning, färg och vård med lugn och omsorg. Jag arbetar på
+      <p class="hero-sub reveal" data-reveal>Klippning, färg och vård med lugn och omsorg. Jag arbetar på
         salongen Müllers. vid Landbrogatan 11, mitt i Karlskrona.</p>
-      <p class="hero-cta reveal" data-reveal">
+      <p class="hero-cta reveal" data-reveal>
         <a class="btn btn--accent" href="#boka">Boka tid</a>
         <a class="btn btn--ghost" href="#galleri">Se mitt arbete</a>
       </p>
@@ -53,7 +58,7 @@
   <!-- ===== Om mig ===== -->
   <section id="om" aria-labelledby="om-rubrik">
     <div class="container">
-      <div class="section-head reveal" data-reveal">
+      <div class="section-head reveal" data-reveal>
         <p class="section-eyebrow">Om mig</p>
         <h2 id="om-rubrik">Hår som känns som ditt</h2>
       </div>
@@ -80,35 +85,35 @@
   <!-- ===== Tjänster (publicerat utbud från salongen, VERIFIED; priser ej publika) ===== -->
   <section id="tjanster" aria-labelledby="tjanster-rubrik">
     <div class="container">
-      <div class="section-head reveal" data-reveal">
+      <div class="section-head reveal" data-reveal>
         <p class="section-eyebrow">Tjänster</p>
         <h2 id="tjanster-rubrik">Det här kan jag</h2>
       </div>
       <div class="services-grid">
-        <article class="service-card reveal" data-reveal">
+        <article class="service-card reveal" data-reveal>
           <h3>Klippning</h3>
           <p>Kort eller långt, klassiskt eller med textur — en klippning som passar dig och
             din vardag.</p>
           <p class="price-line">Pris: –<!-- pending owner confirmation --></p>
         </article>
-        <article class="service-card reveal" data-reveal">
+        <article class="service-card reveal" data-reveal>
           <h3>Färg &amp; balayage</h3>
           <p>Ammoniakfri färg, slingor och balayage. Jag rekommenderar alltid en kostnadfri
             konsultation innan färg.</p>
           <p class="price-line">Pris: –<!-- pending owner confirmation --></p>
         </article>
-        <article class="service-card reveal" data-reveal">
+        <article class="service-card reveal" data-reveal>
           <h3>Vård &amp; håranalys</h3>
           <p>Vårdande behandlingar och håranalys — friskt hår är grunden för allt snyggt.</p>
           <p class="price-line">Pris: –<!-- pending owner confirmation --></p>
         </article>
-        <article class="service-card reveal" data-reveal">
+        <article class="service-card reveal" data-reveal>
           <h3>Bröllop &amp; bal</h3>
           <p>Uppsättning och styling till livets stora dagar. Vi bokar en provdragning i god
             tid innan.</p>
           <p class="price-line">Pris: –<!-- pending owner confirmation --></p>
         </article>
-        <article class="service-card reveal" data-reveal">
+        <article class="service-card reveal" data-reveal>
           <h3>Barbering &amp; skägg</h3>
           <p>Klippning och skäggtrim med kniv och kam, i lugn och ro.</p>
           <p class="price-line">Pris: –<!-- pending owner confirmation --></p>
@@ -120,11 +125,11 @@
   <!-- ===== Galleri: horisontell scrollare (studerad scroll-design) ===== -->
   <section id="galleri" class="gallery-section" aria-labelledby="galleri-rubrik">
     <div class="container">
-      <div class="section-head reveal" data-reveal">
+      <div class="section-head reveal" data-reveal>
         <p class="section-eyebrow">Galleri</p>
         <h2 id="galleri-rubrik">Före &amp; efter</h2>
       </div>
-      <p class="gallery-nav reveal" data-reveal">
+      <p class="gallery-nav reveal" data-reveal>
         <button type="button" data-gallery-prev aria-label="Rulla galleriet åt vänster">←</button>
         <button type="button" data-gallery-next aria-label="Rulla galleriet åt höger">→</button>
       </p>
@@ -195,24 +200,24 @@
   <!-- ===== Boka tid — DEMO-kalender (Hotell-mönstret; bokar aldrig på riktigt) ===== -->
   <section id="boka" aria-labelledby="boka-rubrik">
     <div class="container">
-      <div class="section-head reveal" data-reveal">
+      <div class="section-head reveal" data-reveal>
         <p class="section-eyebrow">Boka tid</p>
         <h2 id="boka-rubrik">Välj en tid att ringa eller skriva om</h2>
       </div>
       <p class="reveal" data-reveal><span class="demo-badge">Demo — ingen bokning genomförs</span></p>
       <div class="booking-layout">
-        <div class="cal-legend reveal" data-reveal" aria-hidden="true">
+        <div class="cal-legend reveal" data-reveal aria-hidden="true">
           <span><i style="background: var(--slot-free-bg)"></i> Demo-ledig</span>
           <span><i style="background: var(--slot-taken-bg)"></i> Demo-upptagen</span>
         </div>
-        <div class="cal-wrap reveal" data-reveal" data-calendar-root>
+        <div class="cal-wrap reveal" data-reveal data-calendar-root>
           <noscript><p class="booking-dialog__note" style="padding:var(--space-4)">
             Kalendern kräver JavaScript. Riktig bokning sker alltid via telefon eller
             Instagram — se sektionen Kontakt.
           </p></noscript>
           <!-- Kalendermatrisen byggs av js/booking-mock.js i den enda .cal-grid:n. -->
         </div>
-        <p class="booking-dialog__note reveal" data-reveal">Schemat är demo. Öppettider och verkliga
+        <p class="booking-dialog__note reveal" data-reveal>Schemat är demo. Öppettider och verkliga
           tider bekräftas av salongen<!-- pending owner confirmation --> — bokning sker via
           telefon eller Instagram.</p>
       </div>
@@ -222,7 +227,7 @@
   <!-- ===== Kontakt ===== -->
   <section id="kontakt" aria-labelledby="kontakt-rubrik">
     <div class="container">
-      <div class="section-head reveal" data-reveal">
+      <div class="section-head reveal" data-reveal>
         <p class="section-eyebrow">Kontakt</p>
         <h2 id="kontakt-rubrik">Hitta mig eller skriv till mig</h2>
       </div>

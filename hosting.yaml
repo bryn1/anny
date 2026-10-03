@@ -2,7 +2,8 @@
   "_comment": [
     "vm106 hosting config -- strict JSON, no yaml. Commit at repo root.",
     "Static site: serves files, binds NO port (PORT rule is service-only).",
-    "URL: sibbamala.com/anny (name verified free 2026-10-03: 404 before publish)."
+    "URL: sibbamala.com/anny (name verified free 2026-10-03: 404 before publish).",
+    "cachebust:all added 2026-10-03: post-deploy byte-match probe saw CF-injected bytes (+~240B) -> rollback latch (MC 10024.1)."
   ],
   "name": "anny",
   "type": "static",
@@ -13,5 +14,8 @@
     "frisör",
     "karlskrona",
     "salong"
-  ]
+  ],
+  "mirror": {
+    "cachebust": "all"
+  }
 }

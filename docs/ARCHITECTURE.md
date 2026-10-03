@@ -9,15 +9,17 @@ File-level placement + naming: `.audits/202610021723-b8a81095/out/PLACEMENT.md`.
 
 Frontend-only static one-page site (Swedish) for hairdresser **Anny Morin**, Karlskrona —
 publicly tied to salon **Müllers.** (Landbrogatan 11); the employment tie is UNVERIFIED per
-research, and unverified contact data (direct phone, hours, prices) is placeholder-marked,
-never invented. Long-scroll narrative flow: Hero → Om mig → Tjänster → Galleri → Boka → Kontakt.
+research. Contact data is either VERIFIED or placeholder-marked, never invented: direct phone
+(`072-155 48 60`) and e-post (`Anny.mullerskarlskrona@gmail.com`) are owner-supplied (2026-10-03,
+MC 10024.1), opening hours and prices are not. Long-scroll narrative flow: Hero → Om mig →
+Tjänster → Galleri → Boka → Kontakt.
 Project intent: real site, frontend-first — backend explicitly deferred (below).
 
 ## Modules (file → single concern)
 
 | Modul | Concern |
 |---|---|
-| `index.html` | enda entrypoint; markup för scroll-flödet, `data-*`-hooks; ingen logik |
+| `index.html` | enda entrypoint; markup för scroll-flödet, `data-*`-hooks; head-sektion för metadata (title, description, Open Graph, canonical, JSON-LD `HairSalon`/`BeautySalon`); ingen logik |
 | `css/tokens.css` | design tokens som CSS custom properties (palett, typografi, spacing) |
 | `css/layout.css` | pageskelett, sektionsflyt, breakpoints (rör ej kalender-gridden) |
 | `css/components.css` | komponentstilar inkl. kalender-mock, modal, formulär, bekräftelse-tillstånd |
@@ -29,6 +31,7 @@ Project intent: real site, frontend-first — backend explicitly deferred (below
 | `images/` | ägarlevererade foton `gal-01`–`gal-04` (provens i `images/README.md`, byte-exakta kopior) + reserverade platshållarslots 5–6 (fler bilder väntas från ägaren); ny bild = fil i den här mappen + manifest-rad, ingen markup-ändring |
 | `DESIGN.md` (rot) | design-spec DIRECTION/TOKENS/LAYOUT — skrivs av frontend-fasen |
 | `hosting.yaml` (rot) | vm106-hostningdeklaration (strict JSON, statisk — ingen port); konsumeras av fleet-reconcilern, laddas EJ av sajten |
+| `robots.txt` (rot) | crawl-deklaration för sökmotorer (endast `User-agent: *` + `Allow: /`, ingen Sitemap-rad — en sida); server under `/anny/robots.txt`, konsumeras EJ av sajten |
 
 ## Entrypoint & serving
 
@@ -57,7 +60,8 @@ gallery + mock availability live as static placeholders (`images/` + inline JS d
   renders the pending state ("skickas till e-post när backend kopplas") — never a fake success.
 - **B2 Riktig bokningsintegration**: Müllers has NO public web booking (research VERIFIED —
   booking via telefon/Instagram). "Boka tid" is a mock whose confirm-modal says the real booking
-  goes via telefon/IG (numbers placeholder until owner confirms). When a real system exists, the
+  goes via telefon/IG (telefon `072-155 48 60`, owner-supplied 2026-10-03; öppettider still
+  placeholder until the owner confirms). When a real system exists, the
   mock's availability-data seam becomes the integration point (likely external-partner link-out,
   e.g. Bokadirekt/Meevo pattern from research).
 
@@ -74,7 +78,10 @@ own files, no vendoring, no copy of the broken parts.
 ## Invariants (violation = bug, not style)
 
 - **I1** No invented contact data — only research-VERIFIED facts (salongadress, IG
-  `@mullers.anny`); everything else placeholder-marked "pending owner confirmation".
+  `@mullers.anny`) plus the sanctioned owner-supplied values: telefon `072-155 48 60` /
+  `+46721554860` and e-post `Anny.mullerskarlskrona@gmail.com` (owner chat 2026-10-03, MC 10024.1).
+  Anything else phone-shaped or e-post-shaped in the tree is fabricated = red. Öppettider and
+  prices remain placeholder-marked "pending owner confirmation".
 - **I2** No fake confirmations: booking mock never books, contact form never sends — both render
   honest states.
 - **I3** The calendar grid template is declared exactly once and no media query in any file
@@ -95,7 +102,9 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
 - **C3** Each JS module: `defer`, one concern, no shared globals, markup contact only via
   `data-*` hooks. *Sole sanctioned exception (MC 3934.3 c2):* `js/gallery-manifest.js` declares
   the read-only `window.ANNY_GALLERY_IMAGES` inventory, loaded before `gallery.js` (defer order)
-  and only ever read by it — the no-404 photo seam replacing the v1 HEAD-probe.
+  and only ever read by it — the no-404 photo seam replacing the v1 HEAD-probe. *Not a module:* a
+  `<script type="application/ld+json">` data-block in `head` (SEO) carries no code and no `defer`,
+  so C3's defer/module rule does not apply to it (MC 10024.1).
 - **C4** Calendar markup follows the Hotell shell shape (single `.calendar-grid`-style container;
   header/body/rows sharing one template; horizontal-scroll wrapper on mobile) with anny's own
   class names.
@@ -114,3 +123,8 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
   entrypoint, dependencies, ports, stores, B1/B2, C1–C4 inkl. C3-undantaget — allesamt
   överensstämmande). `images/`-raden i modultabellen uppdaterad till verkligheten (4
   ägarlevererade foton `gal-01`–`gal-04` + platshållarslots 5–6 väntas); i övrigt NO DRIFT.
+- 2026-10-03 MC 10024.1 — real contact data + local SEO: telefon/e-post becoming owner-supplied
+  linked values (`tel:`/`mailto:`, I1-undantaget utökat), `robots.txt` tillagd, head-sektionen
+  utökad med title/description/Open Graph/canonical + JSON-LD `["HairSalon","BeautySalon"]`
+  (avsiktligt UTAN openingHours, priceRange och aggregateRating — ej bekräftat av ägaren), samt
+  Trossö-mention i hero-texten.

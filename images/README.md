@@ -9,10 +9,12 @@ platshållaren "Bild kommer" består.
 
 | Fil | Ursprungligt filnamn | Ursprung |
 |---|---|---|
-| `gal-01.jpeg` | `1. Before.jpeg` | Ägarbild 2026-10-03 (Sibbis salong, par 1 före) |
-| `gal-02.jpeg` | `1. after.jpeg` | Ägarbild 2026-10-03 (Sibbis salong, par 1 efter) |
-| `gal-03.jpeg` | `2. Before.jpeg` | Ägarbild 2026-10-03 (Sibbis salong, par 2 före) |
-| `gal-04.jpeg` | `2. After.jpeg` | Ägarbild 2026-10-03 (Sibbis salong, par 2 efter) |
+| `gal-01.jpeg` | `1. Before.jpeg` | Ägarbild 2026-10-03 (hämtad från ägarens disk, par 1 före) |
+| `gal-02.jpeg` | `1. after.jpeg` | Ägarbild 2026-10-03 (hämtad från ägarens disk, par 1 efter) |
+| `gal-03.jpeg` | `2. Before.jpeg` | Ägarbild 2026-10-03 (hämtad från ägarens disk, par 2 före) |
+| `gal-04.jpeg` | `2. After.jpeg` | Ägarbild 2026-10-03 (hämtad från ägarens disk, par 2 efter) |
+
+Salongstillhörighet ej bekräftad av ägaren; interiören i gal-01 tyder på Müllers (ej verifierad).
 
 Kopierade byte-exakt (ingen omkodning). Par 1: långt blont, glansiga vågor.
 Par 2: kortare blont lob.

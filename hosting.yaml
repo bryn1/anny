@@ -1,0 +1,11 @@
+{
+  "_comment": ["vm106 hosting config -- strict JSON, no yaml. Commit at repo root.",
+               "Static site: serves files, binds NO port (PORT rule is service-only).",
+               "URL: sibbamala.com/anny (name verified free 2026-10-03: 404 before publish)."],
+  "name": "anny",
+  "type": "static",
+  "root": "apps/anny",
+  "title": "Anny Morin — Frisör Karlskrona",
+  "description": "Anny Morin, frisör i Karlskrona. Klippning, färg och vård på salongen Müllers. Bokning via telefon eller Instagram.",
+  "tags": ["frisör", "karlskrona", "salong"]
+}

@@ -22,12 +22,13 @@ Project intent: real site, frontend-first — backend explicitly deferred (below
 | `css/layout.css` | pageskelett, sektionsflyt, breakpoints (rör ej kalender-gridden) |
 | `css/components.css` | komponentstilar inkl. kalender-mock, modal, formulär, bekräftelse-tillstånd |
 | `js/scroll-reveal.js` | scroll-reveal (IntersectionObserver), hero-ordbygge (auto-kompletteras i vila), reduced-motion |
-| `js/gallery-manifest.js` | galleriets bildmanifest — deklarerar vilka bildfiler som faktiskt finns (seam; C3-undantaget) |
+| `js/gallery-manifest.js` | galleriets bildmanifest — deklarerar vilka bildfiler som faktiskt finns (seam; C3-undantaget). Listar nu 4 riktiga foton (ägare-levererade 2026-10-03, `gal-01`–`gal-04`) |
 | `js/gallery.js` | före/efter-galleri (horisontell scroll), placeholder-kort, bild-in-byte via manifest |
 | `js/booking-mock.js` | "Boka tid"-kalender MOCK (Hotell-mönster, se Reuse); CTA telefon/IG |
 | `js/contact-form.js` | klientvalidering + väntande-tillstånd; ingen dispatch |
 | `images/` | placeholder-bilder (byts till riktiga utan markup-ändring) |
 | `DESIGN.md` (rot) | design-spec DIRECTION/TOKENS/LAYOUT — skrivs av frontend-fasen |
+| `hosting.yaml` (rot) | vm106-hostningdeklaration (strict JSON, statisk — ingen port); konsumeras av fleet-reconcilern, laddas EJ av sajten |
 
 ## Entrypoint & serving
 
@@ -106,3 +107,6 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
   the reveal-contract P0), hero build auto-completes at rest, gallery HEAD-probe replaced by the
   `js/gallery-manifest.js` seam (zero console 404s, C3 exception above), inline data-URI favicon,
   invalid form submit replaces the stale aria-live status.
+- 2026-10-03 MC 3934.7 — pre-publish pass: `hosting.yaml` added (vm106 static hosting, name
+  `anny`, validator PASS), images/README provenance corrected (salong-tillhörighet avmarkerad som
+  ej verifierad), exec-bitar borttagna ur `images/*.jpeg`.

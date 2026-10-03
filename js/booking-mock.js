@@ -70,7 +70,7 @@
         var cell = document.createElement(free ? 'button' : 'span');
         cell.className = 'cal-grid__cell ' +
           (free ? 'cal-grid__cell--free' : 'cal-grid__cell--taken');
-        cell.textContent = free ? 'Ledig' : 'Upptagen';
+        cell.textContent = free ? 'Demo-ledig' : 'Demo-upptagen';
         if (free) {
           cell.type = 'button';
           cell.setAttribute('aria-label',

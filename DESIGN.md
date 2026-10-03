@@ -54,7 +54,7 @@ accent `#fb923c` **8.73:1** on bg — all PASS.
 - Major-third scale 1.25 from baseline: 12.8 / 16 / 20 / 25 / 31.2 / 39.1 px; hero uses
   `clamp(39px, 8vw, 76px)`. Line-heights 1.2/1.45/1.5/1.55 per baseline.
 - Spacing: 4px base, named steps 1→24 per baseline; section rhythm `--space-24` (96px) desktop.
-- Radii per baseline (4/6/8/12/16 px); shadows the baseline's subtle set, dark = lighter-surface.
+- Radii per tokens.css (4/6/8/12 px + full-round); shadows the baseline's subtle set, dark = lighter-surface.
 - `--z-header: 40`, `--z-dialog: 100` (native `<dialog>` stacks its own backdrop below).
 
 ## LAYOUT

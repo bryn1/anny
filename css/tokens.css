@@ -30,6 +30,10 @@
   --accent-surface: rgba(154, 63, 31, 0.08);
   --focus-ring:     #9a3f1f;
 
+  /* ---- Error state (field-error border) — deliberately distinct from
+   * --focus-ring so focus and error never look alike. ---- */
+  --danger:         #b91c1c;   /* 6.47:1 on white — AA text, ≥3:1 UI boundary */
+
   /* ---- Mock-calendar slot states (AA-checked, see DESIGN.md) ---- */
   --slot-free-bg:   #e7e5e4;   /* + text-primary = 13.93:1 */
   --slot-free-bg-hover: #d6d3d1;
@@ -124,10 +128,12 @@
     --accent-surface: rgba(251, 146, 60, 0.14);
     --focus-ring:     #fb923c;
 
+    --danger:         #f87171;   /* 6.32:1 on --surface #1c1917 — AA */
+
     --slot-free-bg:   #44403c;
     --slot-free-bg-hover: #57534e;
     --slot-taken-bg:  #292524;
-    --slot-taken-fg:  #a8a29e;   /* 7.83:1 */
+    --slot-taken-fg:  #a8a29e;   /* 6.02:1 on --slot-taken-bg #292524 (AA); 7.83:1 is vs bg-primary */
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
     --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45);

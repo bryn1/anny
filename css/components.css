@@ -335,12 +335,11 @@
 .field textarea { min-height: 132px; resize: vertical; }
 .field input:focus-visible,
 .field textarea:focus-visible {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-surface);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 .field input[aria-invalid="true"],
-.field textarea[aria-invalid="true"] { border-color: var(--accent); }
+.field textarea[aria-invalid="true"] { border-color: var(--danger); }
 .field-error { font-size: var(--text-xs); color: var(--text-secondary); }
 .form-status {
   border: 1px solid var(--border-default);

@@ -1,0 +1,156 @@
+/* layout.css — page skeleton, scroll flow, section layout, breakpoints.
+ * NEVER re-declares the booking calendar grid template (invariant I3): no rule
+ * in this file names .cal-grid or its tracks at any width. Consumes tokens.css (C1). */
+
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + var(--space-4)); }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font: var(--font-normal) var(--text-sm)/var(--lh-relaxed) var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 { font-family: var(--font-display); line-height: var(--lh-tight); }
+h2 { font-size: var(--text-xl); font-weight: var(--font-semibold); }
+h3 { font-size: var(--text-md); font-weight: var(--font-semibold); }
+p { max-width: 62ch; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--accent-hover); }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+img { max-width: 100%; height: auto; display: block; }
+
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  z-index: calc(var(--z-dialog) + 1);
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+.skip-link:focus { top: var(--space-2); }
+
+/* ---- Page flow ---- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  height: var(--header-h);
+  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.site-header .container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+main > section { padding-block: var(--space-16); }
+main > section:nth-of-type(even) { background: var(--bg-secondary); }
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-10);
+}
+.section-eyebrow {
+  font: var(--font-medium) var(--text-xs)/var(--lh-normal) var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-tertiary);
+}
+
+/* ---- Hero ---- */
+.hero {
+  min-height: calc(92vh - var(--header-h));
+  display: flex;
+  align-items: center;
+  padding-block: var(--space-16);
+}
+.hero .container { display: flex; flex-direction: column; gap: var(--space-6); }
+.hero-title { font-size: var(--text-hero); font-weight: var(--font-semibold); max-width: 14ch; }
+.hero-sub { font-size: var(--text-md); color: var(--text-secondary); max-width: 46ch; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+
+/* ---- Om mig ---- */
+.about-grid { display: grid; gap: var(--space-10); align-items: start; }
+
+/* ---- Tjänster ---- */
+.services-grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+
+/* ---- Galleri ---- */
+/* (scroll mechanics live in components.css .gallery-scroller) */
+.gallery-section .container { max-width: var(--container-max); }
+
+/* ---- Boka tid ---- */
+.booking-layout { display: flex; flex-direction: column; gap: var(--space-6); }
+
+/* ---- Kontakt ---- */
+.contact-grid { display: grid; gap: var(--space-10); align-items: start; }
+
+/* ---- Footer ---- */
+.site-footer {
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+  padding-block: var(--space-10);
+  margin-top: var(--space-8);
+}
+.footer-grid { display: grid; gap: var(--space-8); }
+.footer-bottom {
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+/* ---- Breakpoints (768 / 1024 only; 375px is the tested floor).
+ * Nothing below touches the booking calendar grid — mobile calendar adapts via
+ * the .cal-wrap scroll wrapper (invariant I3). ---- */
+@media (min-width: 768px) {
+  .container { padding-inline: var(--space-8); }
+  main > section { padding-block: var(--space-24); }
+  .about-grid { grid-template-columns: 1.35fr 1fr; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .contact-grid { grid-template-columns: 1.2fr 1fr; }
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+}
+
+@media (min-width: 1024px) {
+  .services-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

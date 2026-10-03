@@ -40,8 +40,11 @@
     var img = document.createElement('img');
     img.setAttribute('data-gallery-img', '');
     img.src = slot;
-    img.alt = 'Före/efter-bild: ' + (media.closest('[data-gallery-card]')
-      .querySelector('.gallery-card__title').textContent.trim());
+    var card = media.closest('[data-gallery-card]');
+    img.alt = 'Före/efter-bild: '
+      + card.querySelector('.gallery-card__tag').textContent.trim()
+      + ' — '
+      + card.querySelector('.gallery-card__title').textContent.trim();
     var label = media.querySelector('[data-gallery-label]');
     if (label) label.remove();
     media.appendChild(img);

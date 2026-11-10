@@ -1,5 +1,7 @@
 /* hero-3d.js — family "hero-siden": the hero's moving visual as a zero-asset
- * WebGL scene (MC 12373). A slowly flowing curtain of hair/silk strands: 24
+ * WebGL scene (MC 12373). reason: one cohesive WebGL hero — the MC 12377
+ * quality ladder below shares this canvas, GL state and rAF loop.
+ * A slowly flowing curtain of hair/silk strands: 24
  * depth layers of ridge-noise fibres lit by a Kajiya-Kay style anisotropic
  * band, so the highlight travels ALONG the fibres, not across them. Every
  * colour is read from the declared tokens in css/tokens.css — this file names
@@ -9,6 +11,14 @@
  * Observer pause-offscreen, prefers-reduced-motion = ONE static frame, silent
  * fallback when WebGL is unavailable. The first draw waits for the browser's
  * RECORDED first contentful paint — the hero paints from HTML+CSS alone.
+ * Adaptive quality ladder (MC 12377; motion path only): 30-frame windows of
+ * rAF frame deltas measure fps; two consecutive windows under 30 fps drop the
+ * render scale one step (device px x 1 -> 0.75 -> 0.5, 0.9 MP cap unchanged)
+ * and re-open the windows for the re-check; at the lowest step a window under
+ * 24 fps freezes to the current frame — data-silk="static", rAF stopped, the
+ * canvas keeps its pixels, nothing (IO included) restarts it. States, mirrored
+ * on window.__heroSilk = { state, scale, fps, drops } for the runtime
+ * instrument: boot -> live (scale 1, then 0.75, 0.5) -> static, or dead.
  * Enhancement only: without JS or WebGL
  * the canvas never exists and the static photo hero underneath is exactly the
  * hero that shipped before this module (zero layout jump — the canvas is
@@ -36,10 +46,11 @@
       cCopper = tok("--copper"), cBrass = tok("--brass"), cCream = tok("--paper");
   if (!cInk || !cSpruce || !cCopper || !cBrass || !cCream) return;
 
-  var cv = null, gl = null, raf = 0;
+  var cv = null, gl = null, raf = 0, hub = null;
 
   function dead() {                       /* silent retreat: the photo hero stays */
     if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    if (hub) hub.state = "dead";
     if (cv && cv.parentNode) cv.parentNode.removeChild(cv);
     hero.classList.remove("scen--siden");
   }
@@ -53,6 +64,9 @@
   try {
     var reduced = window.matchMedia &&
       matchMedia("(prefers-reduced-motion: reduce)").matches;
+    /* the instrument/monitor hook: live view of the adaptation states */
+    hub = window.__heroSilk = { state: reduced ? "static" : "boot",
+      scale: 1, fps: 0, drops: 0 };
 
     cv = document.createElement("canvas");
     cv.className = "scen__siden";
@@ -152,8 +166,12 @@
     gl.uniform3fv(gl.getUniformLocation(prg, "uCream"), new Float32Array(cCream));
 
     var W = 1, H = 1, first = false;
+    /* Quality ladder state (MC 12377): render at device px × STEPS[step];
+       probe() decides once per full 30-frame window (header = the machine). */
+    var STEPS = [1, 0.75, 0.5], step = 0, WN = 30;
+    var wn = 0, wt = 0, wlow = 0, frozen = false;
     function resize() {
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2) * STEPS[step];
       var w = Math.max(1, Math.round(cv.clientWidth * dpr));
       var h = Math.max(1, Math.round(cv.clientHeight * dpr));
       var cap = 900000, s = w * h > cap ? Math.sqrt(cap / (w * h)) : 1;
@@ -171,6 +189,7 @@
       if (!first) {
         first = true;
         cv.dataset.silk = reduced ? "static" : "live";   /* the one data-* hook */
+        hub.state = reduced ? "static" : "live";
         /* Hide the photo layer only when motion is allowed: under reduced
            motion the static canvas already covers it opaquely, and a
            visibility:hidden IMG at load is exactly what the reduced-motion
@@ -208,10 +227,43 @@
          hero's own text/photo paints fully before any WebGL frame is drawn.
          The loop then runs only while the hero is on screen (IO pause). */
       var painted = false, visible = false;
-      function start() { if (!raf && painted && visible) raf = requestAnimationFrame(tick); }
-      function stop() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
-      function tick(ms) { raf = requestAnimationFrame(tick); render(ms); }
+      function start() { if (!raf && !frozen && painted && visible) raf = requestAnimationFrame(tick); }
+      function stop() { if (raf) { cancelAnimationFrame(raf); raf = 0; } wn = 0; }
+      function tick(ms) { raf = requestAnimationFrame(tick); render(ms); probe(ms); }
+      /* One decision per full 30-frame window of rAF deltas (the state
+         machine is in the header). A dropped step re-opens the windows —
+         that is the re-check. Pauses never count: stop() and a tab-hide
+         reset the open window so a pause cannot fake a slow one. */
+      function probe(ms) {
+        if (wn++ === 0) { wt = ms; return; }
+        if (wn < WN) return;
+        var fps = (wn - 1) * 1000 / (ms - wt);
+        wn = 0;
+        hub.fps = Math.round(fps * 10) / 10;
+        if (step < STEPS.length - 1) {
+          wlow = fps < 30 ? wlow + 1 : 0;
+          if (wlow === 2) {
+            wlow = 0; step++;
+            hub.scale = STEPS[step]; hub.drops++;
+            resize(); render(ms);          /* repaint at once: a resize that
+                                              would bare the canvas for one
+                                              slow frame is one the hero may
+                                              never get */
+          }
+        } else if (fps < 24) freeze();
+      }
+      function freeze() {         /* static landing: the current frame stays
+                                     painted (data-silk="static") and nothing
+                                     — the IO restart included — runs rAF */
+        frozen = true;
+        stop();
+        hub.state = "static";
+        cv.dataset.silk = "static";
+      }
       afterPaint(function () { painted = true; start(); });
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) wn = 0;
+      });
       if ("IntersectionObserver" in window) {
         new IntersectionObserver(function (es) {
           es.forEach(function (e) {
@@ -225,7 +277,8 @@
     var rsz;
     window.addEventListener("resize", function () {
       clearTimeout(rsz);
-      rsz = setTimeout(function () { resize(); if (reduced) render(0); }, 150);
+      /* a frozen frame is pixels to keep, not to resize away */
+      rsz = setTimeout(function () { if (frozen) return; resize(); if (reduced) render(0); }, 150);
     });
   } catch (e) { dead(); }
   }

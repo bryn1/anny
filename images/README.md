@@ -1,9 +1,11 @@
 # images/
 
-Plats för riktiga bilder från ägaren. Galleriet visar bara bilder som faktiskt
-finns på disk OCH är upprättade i `js/gallery-manifest.js`
-(`window.ANNY_GALLERY_IMAGES`) — en saknad fil begärs aldrig ut (inga 404:or),
-platshållaren "Bild kommer" består.
+Plats för riktiga bilder från ägaren. De fyra levererade fotona `gal-01`–`gal-04`
+serveras direkt i `index.html` (galleriväggen + hero-vasken) med `width`/`height`
+och `srcset`; breddvariationerna i srcset:et ligger i `derived/` (maskingenererade
+— se `derived/README.md`). Manifest-seamen (`js/gallery-manifest.js` +
+`js/gallery.js`, "Bild kommer"-byte via JS) pensionerades 2026-11-10 (MC 12367):
+fikterna om vilka filer som finns står nu i markupen som faktiskt serveras.
 
 ## Proveniens (ägarkamera, levererade 2026-10-03)
 
@@ -19,20 +21,18 @@ Salongstillhörighet ej bekräftad av ägaren; interiören i gal-01 tyder på M�
 Kopierade byte-exakt (ingen omkodning). Par 1: långt blont, glansiga vågor.
 Par 2: kortare blont lob.
 
-## Kvargande platshållare
+## Kvargande tomma slots
 
-| Fil | Plats |
+| Slot | Plats |
 |---|---|
-| `gal-05.jpeg` | Gallerikort 5 (platshållare — fler bilder väntas från ägaren) |
-| `gal-06.jpeg` | Gallerikort 6 (platshållare — fler bilder väntas från ägaren) |
+| Bal (före/efter) | Galleriväggen — `tom-rum`, "Bild kommer" (fler bilder väntas från ägaren) |
+| Skäggtrim (före/efter) | Galleriväggen — `tom-rum`, "Bild kommer" (fler bilder väntas från ägaren) |
+| Porträtt | "Om mig"-ramen — `tom-rum`, "Porträtt — bild kommer" |
 
 Gallerikort 1–4 motsvarar nu `gal-01`–`gal-04` (titlarna "Långt blont" resp.
-"Kortare blont", kort 5–6 behåller sina serviceplatshållartitlar).
+"Kortare blont"); de två sista slotsen behåller sina serviceplatshållartitlar.
 
-Konvention (redan förberedd i `index.html` + `js/gallery.js`): lägg filen på
-rätt namn OCH lägg till dess sökväg i listan i `js/gallery-manifest.js`
-(`window.ANNY_GALLERY_IMAGES`) — då byter gallerikortet platshållaren mot
-bilden (`data-img-slot` + manifestrad; ingen HEAD-check, inga 404:or för
-saknade filer). Ingen markup-ändring behövs. Porträtt till "Om mig":
-`portrait.jpeg` (platshållarkortet uppdateras till `<img>` av en senare fas
-när bilden finns).
+Konvention (2026-11-10, MC 12367): en ny bild = (1) lägg filen på rätt namn här,
+(2) kör om genereringen i `derived/README.md`, (3) byt `tom-rum`-rutan mot ett
+`<img>` med `width`/`height` + `srcset` i `index.html` (schema efter de fyra
+befintliga). Bildtexten får aldrig säga mer än vad som är bekräftat (I1).

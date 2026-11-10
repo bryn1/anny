@@ -1,156 +1,213 @@
-/* layout.css — page skeleton, scroll flow, section layout, breakpoints.
- * NEVER re-declares the booking calendar grid template (invariant I3): no rule
- * in this file names .cal-grid or its tracks at any width. Consumes tokens.css (C1). */
+/* layout.css — the sticky shell, the scene/content rhythm, the two bookend
+ * scenes and the footer. Beat-to-beat padding comes from the two rhythm tokens
+ * only. Consumes tokens.css (C1); no component cards here (components.css). */
 
-*,
-*::before,
-*::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + var(--space-4)); }
-
-body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font: var(--font-normal) var(--text-sm)/var(--lh-relaxed) var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-h1, h2, h3 { font-family: var(--font-display); line-height: var(--lh-tight); }
-h2 { font-size: var(--text-xl); font-weight: var(--font-semibold); }
-h3 { font-size: var(--text-md); font-weight: var(--font-semibold); }
-p { max-width: 62ch; }
-
-a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-a:hover { color: var(--accent-hover); }
-:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-
-img { max-width: 100%; height: auto; display: block; }
-
-.skip-link {
-  position: absolute;
-  left: var(--space-4);
-  top: -100px;
-  z-index: calc(var(--z-dialog) + 1);
-  background: var(--surface);
-  color: var(--text-primary);
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-}
-.skip-link:focus { top: var(--space-2); }
-
-/* ---- Page flow ---- */
-.container {
-  width: 100%;
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: var(--space-4);
-}
-
+/* — sticky shell (motion family "sticky-skalm": CSS only, no JS, no timed motion) — */
 .site-header {
   position: sticky;
   top: 0;
   z-index: var(--z-header);
-  height: var(--header-h);
-  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border-subtle);
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
 }
-.site-header .container {
-  height: 100%;
+
+.site-header .kant {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-}
-
-main > section { padding-block: var(--space-16); }
-main > section:nth-of-type(even) { background: var(--bg-secondary); }
-
-.section-head {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin-bottom: var(--space-10);
-}
-.section-eyebrow {
-  font: var(--font-medium) var(--text-xs)/var(--lh-normal) var(--font-sans);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-tertiary);
-}
-
-/* ---- Hero ---- */
-.hero {
-  min-height: calc(92vh - var(--header-h));
-  display: flex;
-  align-items: center;
-  padding-block: var(--space-16);
-}
-.hero .container { display: flex; flex-direction: column; gap: var(--space-6); }
-.hero-title { font-size: var(--text-hero); font-weight: var(--font-semibold); max-width: 14ch; }
-.hero-sub { font-size: var(--text-md); color: var(--text-secondary); max-width: 46ch; }
-.hero-cta { display: flex; flex-wrap: wrap; gap: var(--space-4); }
-
-/* ---- Om mig ---- */
-.about-grid { display: grid; gap: var(--space-10); align-items: start; }
-
-/* ---- Tjänster ---- */
-.services-grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
-
-/* ---- Galleri ---- */
-/* (scroll mechanics live in components.css .gallery-scroller) */
-.gallery-section .container { max-width: var(--container-max); }
-
-/* ---- Boka tid ---- */
-.booking-layout { display: flex; flex-direction: column; gap: var(--space-6); }
-
-/* ---- Kontakt ---- */
-.contact-grid { display: grid; gap: var(--space-10); align-items: start; }
-
-/* ---- Footer ---- */
-.site-footer {
-  border-top: 1px solid var(--border-subtle);
-  background: var(--bg-tertiary);
-  padding-block: var(--space-10);
-  margin-top: var(--space-8);
-}
-.footer-grid { display: grid; gap: var(--space-8); }
-.footer-bottom {
-  margin-top: var(--space-8);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--border-subtle);
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-6);
   align-items: baseline;
   justify-content: space-between;
+  gap: var(--space-intra);
+  padding-block: var(--pad-cta-v);
 }
 
-/* ---- Breakpoints (768 / 1024 only; 375px is the tested floor).
- * Nothing below touches the booking calendar grid — mobile calendar adapts via
- * the .cal-wrap scroll wrapper (invariant I3). ---- */
-@media (min-width: 768px) {
-  .container { padding-inline: var(--space-8); }
-  main > section { padding-block: var(--space-24); }
-  .about-grid { grid-template-columns: 1.35fr 1fr; }
-  .services-grid { grid-template-columns: repeat(2, 1fr); }
-  .contact-grid { grid-template-columns: 1.2fr 1fr; }
-  .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: var(--tr-display);
+  color: var(--ink);
+  text-decoration: none;
 }
 
-@media (min-width: 1024px) {
-  .services-grid { grid-template-columns: repeat(3, 1fr); }
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pad-card-sm) var(--space-intra);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+.site-nav a {
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--spruce);
+  font-weight: 600;
+}
+
+.site-nav a:hover { color: var(--copper-deep); text-decoration: underline; }
+
+/* on the smallest band only the ask stays in the shell; the footer carries the full list */
+@media (max-width: 599.9px) {
+  .site-nav .nav-lank { display: none; }
+}
+
+/* — content beats: one rhythm token apart, light grounds between the two scenes — */
+.content {
+  padding-block: var(--space-inter);
+  background: var(--paper);
+}
+
+.content--sand { background: var(--paper-2); }
+
+.beat-lead { margin-bottom: var(--space-intra); }
+.beat-lead h2 { margin-top: var(--pad-cta-v); }
+
+/* — saturated scenes: exactly two, bookending, never adjacent —
+   one solid ::before ink tint behind scene text; two declared tint values site-wide — */
+.scen {
+  position: relative;
+  overflow: hidden;                       /* clips the breathing photo; never page-wide */
+  background-color: var(--spruce-deep);   /* opaque ground: what text is measured against */
+  color: var(--paper);
+  padding-block: var(--pad-scene);
+  display: grid;
+  align-content: center;
+  min-height: var(--min-hero);
+}
+
+.scen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--scene-tint);
+  opacity: var(--scene-tint-hero);
+  z-index: 1;
+}
+
+.scen__media { position: absolute; inset: 0; z-index: 0; }
+.scen__media img { width: 100%; height: 100%; object-fit: cover; opacity: var(--scene-photo); }
+
+.scen__in {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-intra);
+  padding-inline: var(--space-intra);
+}
+
+.scen .eyebrow { color: var(--brass); }
+.scen .meta { color: var(--brass); }   /* micro-labels on dark take the brass accent */
+/* the hero is the one scene WITH a photo behind its type: the photo wash makes
+   brass an unreadable micro-label there, so the hero eyebrow takes the declared
+   secondary-on-dark token; brass keeps its declared role everywhere no photo
+   sits under the type. Values verified by the gate's composited contrast probe. */
+.scen--top .eyebrow { color: var(--spruce-mist); }
+.scen .lede { color: var(--spruce-mist); max-width: 34ch; }
+
+/* the links the scenes carry are contact channels, not blue-on-dark accidents —
+   paper-coloured text on the tinted ground; the scenes' OWN CTAs are paper-filled
+   buttons whose ink text sits on paper and must out-specify `.scen a`. */
+.scen a { color: var(--paper); }
+.scen a:hover { color: var(--brass); }
+.scen .cta, .scen .cta:hover { color: var(--ink); }
+
+/* the hero ask row: Boka + the live tel link beside it, then the IG pointer */
+.hero-ask {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--pad-card-sm) var(--space-intra);
+}
+
+.hero-kanal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--pad-card-sm) var(--space-intra);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.hero-kanal a { color: var(--paper); text-decoration-color: var(--brass); }
+
+/* scene 2 — the hue-swapped bookend: copper ground, no photo under the type */
+.scen--slut {
+  background-color: var(--closer-ground);
+  min-height: var(--min-closer);
+}
+
+.scen--slut::before { opacity: var(--scene-tint-scene); }
+.scen--slut .eyebrow { color: var(--brass); }
+
+/* — the footer continues the bookend ground — the page closes on the signature pair — */
+.site-footer {
+  background: var(--closer-ground);
+  color: var(--paper);
+  padding-block: var(--space-inter) var(--space-intra);
+}
+
+.site-footer .kant {
+  display: grid;
+  gap: var(--space-intra);
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pad-card-sm) var(--space-intra);
+}
+
+.footer-nav a {
+  color: var(--paper);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.footer-nav a:hover { color: var(--brass); text-decoration: underline; }
+
+.site-footer a { color: var(--paper); }
+.site-footer a:hover { color: var(--brass); }
+.site-footer .meta { color: var(--brass); }
+.site-footer .text-sm { color: var(--spruce-mist); font-size: var(--fs-micro); line-height: var(--lh-micro); max-width: 74ch; }
+
+/* — section interiors that are rhythm, not component — */
+.om-grid { display: grid; gap: var(--space-intra); }
+.om-grid figure img { width: 100%; height: auto; }
+.om-grid .tom-rum { aspect-ratio: 4 / 5; }
+
+.kontakt-scen {
+  /* above the scene's solid ink tint (same as .scen__in): the tint darkens the
+     GROUND behind the text, never the text or the paper CTA painted on top. */
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--space-intra);
+  justify-items: start;
+}
+.kontakt-rader { display: grid; gap: var(--space-intra); }
+.kontakt-rader dt { font-weight: 700; }
+.kontakt-rader dd { margin: 0; }
+
+@media (min-width: 600px) and (max-width: 899.9px) {
+  .om-grid { grid-template-columns: 220px 1fr; align-items: start; gap: var(--space-inter); }
+}
+
+@media (min-width: 900px) and (max-width: 1199.9px) {
+  .om-grid { grid-template-columns: 240px 1fr; align-items: start; gap: var(--space-inter); }
+  .kontakt-rader { grid-template-columns: 1fr 1fr; }
+  .kontakt-rader > div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--pad-card-sm); }
+  .kontakt-rader dd { text-align: right; }
+}
+
+@media (min-width: 1200px) and (max-width: 9999.9px) {
+  .om-grid { grid-template-columns: 260px 1fr; align-items: start; gap: var(--space-inter); }
+  .kontakt-rader { grid-template-columns: 1fr 1fr; }
+  .kontakt-rader > div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--pad-card-sm); }
+  .kontakt-rader dd { text-align: right; }
 }

@@ -1,97 +1,89 @@
 # DESIGN — Anny Morin, Frisör Karlskrona
 
-MC 3934.3 · 2026-10-03 · frontend-build. Adapted from the fleet design baseline
-(`workflow-frontend/design-baseline.md`: zinc ramp + WCAG-checked pairs) to a hair-salon
-context. All contrast ratios below are computed this session (WCAG 2.2 relative-luminance).
+2026-11-10 · MC 12367 · frontend-build (branch `session/hero-anny-27`). This version
+SUPERSEDES the 2026-10-03 MC 3934.3 spec (its stone-monochrome world lives on only in git
+history). Design language: fleet theme **27 "Salongens rytm"**
+(`~/Hemsidor/projects/salong/prototypes/27-salongens-rytm`, read-only), ported onto the
+published Anny/Mullers content canon. All legibility numbers are the ones the workflow-webdesign
+quality gate 1.4.0 measured on THIS candidate (composited-pixel contrast + focus-indicator
+probes), not hand-computed pairs — see `.audits/202611101228-hero27/out/QUALITY-candidate.md`.
 
 ## DIRECTION
 
-Calm, editorial monochrome. The site itself is quiet — warm stone neutrals, generous space,
-one copper accent — so that **the hair photos carry the color** (research section C:
-"monokrom, minimalistisk base + en stark scroll-effekt"). Motion: the hero name builds
-word-by-word on scroll; sections reveal once; the gallery scrolls horizontally (the researched
-FC-Nantes pattern → before/after story-telling). Everything honest: the booking calendar is a
-labelled demo, the contact form states that no backend is connected, unknowns stay empty with
-`<!-- pending owner confirmation -->` (invariant I1/I2).
+"Salongens rytm": a paper ground, spruce + copper + sand, one brass accent, and two
+saturated scenes bookending the page — the hero over the salon's own photo (scene 1), the
+contact channels on the copper closer-ground (scene 2). The mirror-frame motif is the only
+ornament. The content is the published site verbatim: five services with prices `–` until the
+owner confirms, the demo booking mock that never confirms anything, the contact form labelled
+demo with no backend, the four real owner-delivered photos as the fore/efter wall. Everything
+unknown stays visibly unknown (tom-rum empty states: portrait, two gallery slots, öppettider
+"(bekräftas snart)").
 
-Voice: Swedish, warm, first-person ("Jag klipper, färgar och vårdar hår i Karlskrona").
+Voice: Swedish, warm, first-person — unchanged from the canon.
 
-## TOKENS (implemented 1:1 in `css/tokens.css` — C1: only that file defines custom properties)
+## TOKENS (implemented 1:1 in `css/tokens.css` — C1: only that file names a colour)
 
-### Base — warm monochrome (Tailwind stone ramp, replacing the baseline's cool zinc)
+Palette, type roles, rhythm and motion budget ported from theme 27's token block; the two
+scene-tint values are re-tuned for the site's REAL photos (the theme's placeholders are not
+this page's pixels) and validated by the gate's composited contrast row.
 
-| Token | Hex | Role | Checked pair → ratio |
-|---|---|---|---|
-| `--bg-primary` | `#ffffff` | page background | — |
-| `--bg-secondary` | `#fafaf9` | alternating sections | — |
-| `--bg-tertiary` | `#f5f5f4` | inline surfaces | — |
-| `--surface` / hover / active | `#ffffff` / `#fafaf9` / `#f5f5f4` | cards, inputs | — |
-| `--border-subtle` / `--default` / `--strong` | `#e7e5e4` / `#d6d3d1` / `#a8a29e` | hairlines | stone-400 border only, never text |
-| `--text-primary` | `#1c1917` | headings, body | **17.49:1** on white PASS |
-| `--text-secondary` | `#57534e` | secondary copy | **7.63:1** on white PASS |
-| `--text-tertiary` | `#78716c` | hints, labels | **4.80:1** on white PASS |
-
-### Accent — ONE copper (the only chromatic color in chrome; hair photos do the rest)
-
-| Token | Hex | Checked pair → ratio |
+| Token | Hex | Role |
 |---|---|---|
-| `--accent` | `#9a3f1f` | on white **6.76:1** PASS · white on accent **6.76:1** PASS · on `#fafaf9` **6.48:1** PASS |
-| `--accent-hover` | `#6f3417` | on white **9.64:1** PASS |
-| `--accent-surface` | `rgba(154,63,31,.08)` | selected slot / chip background (decorative; text on it stays `--text-primary`) |
-| `--focus-ring` | `#9a3f1f` | outline 2px + 2px offset (I5) |
+| `--paper` / `--paper-2` / `--rule` | `#f6f1e8` / `#ece4d6` / `#d8cbb6` | grounds + sand hairlines |
+| `--ink` / `--ink-soft` | `#201a15` / `#4a4038` | text on light grounds only |
+| `--spruce-deep` / `--spruce` / `--spruce-mist` | `#14332b` / `#1d473c` / `#dce7de` | hero ground / links + frame / secondary on dark |
+| `--copper-deep` / `--copper` | `#7c3a17` / `#a4552b` | CTA fill, eyebrow, focus on light |
+| `--brass` | `#d9a05b` | micro-labels + focus ring on dark grounds |
+| `--closer-ground` | `#5c2d14` | scene 2 + footer bookend |
+| `--scene-tint(-hero/-scene)` | `#120f0c` @ 0.55 / 0.68 | solid ink tint behind scene text |
+| `--danger` | `#b91c1c` | field-error only — never the focus ring |
 
-### Dark mode (`prefers-color-scheme: dark`, same file)
-
-bg `#0c0a09` · surfaces `#1c1917`/`#292524` · borders `#292524`/`#44403c`/`#57534e` ·
-text `#f5f5f4` **18.11:1** / `#d6d3d1` **13.26:1** / `#a8a29e` **7.83:1** ·
-accent `#fb923c` **8.73:1** on bg — all PASS.
-
-### Type · space · radius · z
-
-- `--font-display: Georgia, "Iowan Old Style", "Times New Roman", serif` — display only (hero,
-  h2): salon editorial feel with **zero web-font downloads** (system fonts, offline rule).
-- `--font-sans`: baseline system stack (`-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, …`).
-- Major-third scale 1.25 from baseline: 12.8 / 16 / 20 / 25 / 31.2 / 39.1 px; hero uses
-  `clamp(39px, 8vw, 76px)`. Line-heights 1.2/1.45/1.5/1.55 per baseline.
-- Spacing: 4px base, named steps 1→24 per baseline; section rhythm `--space-24` (96px) desktop.
-- Radii per tokens.css (4/6/8/12 px + full-round); shadows the baseline's subtle set, dark = lighter-surface.
-- `--z-header: 40`, `--z-dialog: 100` (native `<dialog>` stacks its own backdrop below).
+Type: display (Iowan/Palatino/Georgia system serif) / body (Optima/Segoe UI/system-ui) /
+micro-label roles; single `--root` multiplier 16.4→18 px across the four declared bands
+(`--bp-*` tokens 600/900/1200 px + .9 caps — the vocabulary the gate's gb7 reads).
+Micro text is ≥ 13.9 px in every band. Spacing: `--space-intra` 24 / `--space-inter` 64 only.
+No dark `prefers-color-scheme` variant: the paper world is the design (the 2026-10-03 dark
+ramp retired with this port).
 
 ## LAYOUT
 
-Single page, long-scroll narrative (research C: linear narrative + reward CTA at end):
-`Hero → Om mig → Tjänster → Galleri → Boka tid → Kontakt → footer`, sticky slim header with
-anchor nav + IG link. Container: 100% / max 1120px / 16px inline padding (32px ≥768px).
+Single scroll, beats in the theme's rhythm (`Hero → Om → Tjänster → Galleri → Boka →
+Meddelande → Kontakt-scen → footer`), sticky paper shell; below the 600 px band only the
+wordmark + Boka stay in the shell and the footer carries the full list.
 
-- **Hero** (min-height 92vh): eyebrow "Frisör i Karlskrona", display title built word-by-word
-  from `data-hero-title="Anny Morin — Frisör Karlskrona"`, sub-line, two CTAs (Boka tid → accent,
-  Se mitt arbete → ghost). Word build = scroll-progress over hero via IntersectionObserver + rAF;
-  all words static when `prefers-reduced-motion: reduce` (I5).
-- **Om mig**: two-column ≥768px (text + portrait placeholder card), single column mobile.
-- **Tjänster**: card grid 1/2/3 cols at 0/768/1024px; services are the VERIFIED list only;
-  price row renders `–` + pending-owner comment (I1).
-- **Galleri**: horizontal snap-scroller (the researched horizontal-scroll pattern); before/after
-  cards, CSS-gradient placeholder blocks labelled "Bild kommer"; markup ready for real
-  `images/gal-XX.jpeg` (no 404s now — gradient placeholders, images/ holds the convention).
-- **Boka tid (mock)**: Hotell calendar-matrix pattern (C4) — weekday columns (Mån–Fre),
-  time-slot rows. The grid template (`--cal-slot-w` + 5 explicit `minmax()` tracks) is declared
-  **exactly once**, in `components.css`; header/rows join it via `display:contents`; mobile
-  adapts via `.cal-wrap` horizontal-scroll wrapper — **no media query anywhere re-declares the
-  template** (I3, Hotell defect 1 not copied). Slots: `Ledig` = `#e7e5e4` + `#1c1917` (13.93:1),
-  `Upptagen` (mock) = `#44403c` + `#fafaf9` (9.84:1). Section is labelled demo (I2).
-- **Booking modal**: native `<dialog>` (Esc, focus-trap, backdrop), slot-select → confirm view →
-  honest demo view stating real booking goes via telefon/Instagram (telefon `072-155 48 60` and
-  IG `@mullers.anny`, both linked). Fully styled confirm/success state incl. visible "Stäng" button
-  (I4, Hotell defect 2 not copied). **Never claims a booking happened.**
-- **Kontakt**: form (namn/e-post/meddelande, client validation) + address block
-  (Landbrogatan 11, 371 35 Karlskrona — VERIFIED); telefon + e-post are owner-supplied values
-  linked `tel:`/`mailto:` (MC 10024.1, 2026-10-03); öppettider stays pending-owner commented (I1).
-  Submit → persistent honest pending note (I2).
-- **Footer**: name, address, IG link (nav + footer per facts rule), nav anchors.
-- Breakpoints 768/1024px only; 375px is the design target for calendar + gallery scroll.
+- **Hero (scene 1)** — photo wash (gal-01, the site's own photo) + solid tint; eyebrow + h1
+  + lede; the owner-ratified ask row: **Boka tid** (to `#boka`) with the **live tel link**
+  beside it, and the Instagram pointer as the only trust signal. CSS-only Ken Burns
+  ("hero-andning"), no JS.
+- **Om mig** — prose canon verbatim; the portrait photo still does not exist, so the frame
+  shows the honest `tom-rum` state ("Porträtt — bild kommer") — never a fake stand-in.
+- **Tjänster** — five published services, texts verbatim, price rows `Pris … –` with the
+  pending-owner-confirmation comments kept in markup (I1).
+- **Galleri** — the fore/efter WALL (the 2026-10-03 horizontal scroller retired): the four
+  real photos served directly with `width`/`height` + `srcset` (derived widths in
+  `derived/`); captions carry the published tags/titles only ("Före/Efter", "Långt blont",
+  "Kortare blont"). The two slots without delivered photos (Bal, Skäggtrim) show the
+  dashed `tom-rum` empty state — the JS manifest-swap seam retired with it (photos are now
+  confirmed on disk; the served markup says what exists).
+- **Boka (demo)** — same behaviour as published: `js/booking-mock.js` builds the single
+  `.cal-grid` (template declared exactly once — I3; mobile via `.cal-wrap`), dialog confirm
+  → honest done view ("Ingen bokning har genomförts…" — never a fake confirmation), phone +
+  Instagram handoff. Visible `Demo — ingen bokning genomförs` mark (I2). New bevis-rad:
+  galleri / Instagram / telefon — the published channels, no invented reviews.
+- **Meddelande** — the published contact form + validation, now visibly labelled
+  `Demo — skickas inte` BEFORE use, not only after submit.
+- **Kontakt (scene 2 + footer bookend)** — real owner-supplied values on the copper
+  closer-ground: telefon `tel:` + e-post `mailto:` + Instagram + address; öppettider stays
+  "(bekräftas snart)" (I1).
+- **Motion budget (4 families, motion.css):** reveal (IO, `.js-motion`-gated), hero-andning
+  (CSS), sticky-skalm (CSS), dialog-lyft (CSS). All from-states sit behind BOTH
+  `prefers-reduced-motion: no-preference` and `.js-motion`; no JS or reduced motion ⇒ the
+  page simply sits in its end state. No scroll handlers, no rAF, no scrub tweens.
 
-## FILES (per PLACEMENT.md)
+## FILES
 
-`index.html` · `css/tokens.css` → `css/layout.css` → `css/components.css` (C2) ·
-`js/scroll-reveal.js` · `js/gallery.js` · `js/booking-mock.js` · `js/contact-form.js` ·
-`images/` (placeholder convention). `data-*` hooks only; JS `defer`; no shared globals (C3).
+`index.html` · css `tokens → base → layout → components → forms → motion` (C2 order) ·
+js `rytm.js` (reveal) + `booking-mock.js` + `contact-form.js` · `images/` (owner photos,
+byte-exact) · `derived/` (machine-generated srcset ladder — regenerate, never hand-edit) ·
+`data-*` hooks only; JS `defer`; no globals (C3 — the manifest exception retired with
+`gallery-manifest.js`).

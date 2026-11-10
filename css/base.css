@@ -1,0 +1,162 @@
+/* base.css — reset, the three type roles, links, themed focus, the skip pair,
+ * layout helpers, the mirror-frame motif and the CTA. No section interiors here
+ * (layout.css) and no component cards (components.css / forms.css). */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html {
+  scroll-padding-top: calc(var(--space-inter) + var(--pad-cta-v));
+  overflow-wrap: break-word;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-text-size-adjust: 100%;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+/* — type roles: size + tracking come from role tokens only — */
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-display);
+  font-weight: 700;
+  max-width: 22ch;
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+
+.eyebrow, .meta, .not {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-micro);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.eyebrow { color: var(--copper-deep); }
+.meta { color: var(--spruce); }
+.not { color: var(--ink-soft); font-weight: 400; letter-spacing: var(--tr-micro); }
+
+.lede {
+  font-size: var(--fs-lede);
+  line-height: 1.55;
+  max-width: 46ch;
+}
+
+.prosa { max-width: 58ch; }
+.prosa h2 { margin-block: var(--pad-cta-v) var(--space-intra); }
+.prosa p + p { margin-top: var(--space-intra); }
+
+a {
+  color: var(--spruce);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover { color: var(--copper-deep); }
+
+/* — focus is themed from tokens, never removed — */
+:focus-visible {
+  outline: 2px solid var(--copper-deep);
+  outline-offset: var(--ring-offset);
+  border-radius: var(--radius);
+}
+
+/* the ring colour follows the GROUND it is drawn on (WCAG 1.4.11 non-text
+   contrast, 3:1). The dark scenes and the footer take the brass accent (the
+   token declared for micro-labels and focus on dark); every light surface
+   keeps copper-deep. */
+.scen :focus-visible,
+.site-footer :focus-visible { outline-color: var(--brass); }
+
+/* — the skip pair: both targets ship in the served HTML (before <main>);
+   the second skip names the footer end. — */
+.hoppa {
+  position: absolute;
+  left: var(--space-intra);
+  top: var(--pad-cta-v);
+  z-index: var(--z-skip);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  background: var(--ink);
+  color: var(--paper);
+  padding: var(--pad-cta-v) var(--space-intra);
+  text-decoration: none;
+}
+
+/* the skip link sits on ink: its hover must not fall through to a:hover */
+.hoppa, .hoppa:hover { color: var(--paper); }
+
+.hoppa:focus {
+  width: auto;
+  height: auto;
+  clip-path: none;
+  /* The pill is a UI surface, so it carries its own ground: the plate is
+     --paper painted by the pill itself, one declared --pad-cta-v deep — past
+     the ring's outer edge (--ring-offset 3 + ring 2), so every edge of the
+     ring stands on the declared light surface whatever is painted behind it.
+     Ring colour and --ring-offset unchanged. */
+  box-shadow: 0 0 0 var(--pad-cta-v) var(--paper);
+  outline: 2px solid var(--copper-deep);
+  outline-offset: var(--ring-offset);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* — layout helpers — */
+.kant {
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--space-intra);
+}
+
+.kant--sm { max-width: var(--wrap-narrow); }
+
+/* the ONE structural ornament: the mirror-frame motif, repeated, nothing else */
+.ram {
+  border: 1px solid var(--spruce);
+  outline: 1px solid var(--spruce);
+  outline-offset: var(--frame-offset);
+}
+
+/* the escalating ask — verb-first CTAs; light-ground fill by default */
+.cta {
+  display: inline-block;
+  background: var(--copper-deep);
+  color: var(--paper);
+  border: 1px solid var(--copper-deep);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  padding: var(--pad-cta-v) var(--space-intra);
+  text-decoration: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.cta:hover { background: var(--copper); border-color: var(--copper); color: var(--paper); }
+
+/* paper-filled variant for the dark scenes */
+.cta--papper { background: var(--paper); border-color: var(--paper); color: var(--ink); }
+.cta--papper:hover { background: var(--spruce-mist); border-color: var(--spruce-mist); color: var(--ink); }

@@ -20,16 +20,18 @@ Project intent: real site, frontend-first — backend explicitly deferred (below
 | Modul | Concern |
 |---|---|
 | `index.html` | enda entrypoint; markup för scroll-flödet, `data-*`-hooks; head-sektion för metadata (title, description, Open Graph, canonical, JSON-LD `HairSalon`/`BeautySalon`); ingen logik |
-| `css/tokens.css` | design tokens som CSS custom properties (palett, typografi, spacing) |
-| `css/layout.css` | pageskelett, sektionsflyt, breakpoints (rör ej kalender-gridden) |
-| `css/components.css` | komponentstilar inkl. kalender-mock, modal, formulär, bekräftelse-tillstånd |
-| `js/scroll-reveal.js` | scroll-reveal (IntersectionObserver), hero-ordbygge (auto-kompletteras i vila), reduced-motion |
-| `js/gallery-manifest.js` | galleriets bildmanifest — deklarerar vilka bildfiler som faktiskt finns (seam; C3-undantaget). Listar nu 4 riktiga foton (ägare-levererade 2026-10-03, `gal-01`–`gal-04`) |
-| `js/gallery.js` | före/efter-galleri (horisontell scroll), placeholder-kort, bild-in-byte via manifest |
-| `js/booking-mock.js` | "Boka tid"-kalender MOCK (Hotell-mönster, se Reuse); CTA telefon/IG |
-| `js/contact-form.js` | klientvalidering + väntande-tillstånd; ingen dispatch |
-| `images/` | ägarlevererade foton `gal-01`–`gal-04` (provens i `images/README.md`, byte-exakta kopior) + reserverade platshållarslots 5–6 (fler bilder väntas från ägaren); ny bild = fil i den här mappen + manifest-rad, ingen markup-ändring |
-| `DESIGN.md` (rot) | design-spec DIRECTION/TOKENS/LAYOUT — skrivs av frontend-fasen |
+| `css/tokens.css` | design tokens som CSS custom properties (palett, typografi, spacing) — enda filen som namnger en färg (C1) |
+| `css/base.css` | reset, typrollerna, länkar, themead focus, skip-paret, spegelram-motivet, CTA |
+| `css/layout.css` | sticky-skall, scen-/beatrytm, de två scenerna, sidfot, breakpoints (rör ej kalender-gridden) |
+| `css/components.css` | tjänstekort, före/efter-vägg, demo-märken, kalender-mallen (en enda .cal-grid — I3), bevisrad, bokningsdialog |
+| `css/forms.css` | kontaktformulärets fält-/valideringstilstånd |
+| `css/motion.css` | rörellebudgeten (reveal / hero-andning / sticky-skalm / dialog-lyft), bak både `prefers-reduced-motion` och `.js-motion` |
+| `js/rytm.js` | reveal-koreografin (IntersectionObserver, en klass-flipp; ingen scroll-handler, inget rAF) — ärvt från tema 27 `rytm.js` |
+| `js/booking-mock.js` | "Boka tid"-kalender MOCK (Hotell-mönster, se Reuse); CTA telefon/IG; oförändrad sedan 2026-10-02 |
+| `js/contact-form.js` | klientvalidering + väntande-tillstånd; ingen dispatch; oförändrad |
+| `images/` | ägarlevererade foton `gal-01`–`gal-04` (provens i `images/README.md`, byte-exakta kopior); serveras direkt i markup med srcset; kvarvarande platshållarslots 5–6 + porträtt visas som tom-tillstånd (`tom-rum`) |
+| `derived/` | maskingenererad srcset-trappa (`gal-0N-wW.jpeg`, bredder 384/768/1152) från `images/` — genereras om, redigeras ej, jamais handarbete |
+| `DESIGN.md` (rot) | design-spec DIRECTION/TOKENS/LAYOUT — tema-27-porten 2026-11-10 |
 | `hosting.yaml` (rot) | vm106-hostningdeklaration (strict JSON, statisk — ingen port); konsumeras av fleet-reconcilern, laddas EJ av sajten |
 | `robots.txt` (rot) | crawl-deklaration för sökmotorer (endast `User-agent: *` + `Allow: /`, ingen Sitemap-rad — en sida); server under `/anny/robots.txt`, konsumeras EJ av sajten |
 
@@ -52,7 +54,8 @@ between checks.
 ## Data stores
 
 None. No server, no database, no localStorage/cookies. All state is in-memory page state;
-gallery + mock availability live as static placeholders (`images/` + inline JS data structures).
+gallery photos live as served markup over `images/`+`derived/`, mock availability as a static
+data structure inside `booking-mock.js`.
 
 ## Backend — DEFERRED (future modules, not built now)
 
@@ -97,12 +100,15 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
 ## Contracts (seams builders cite)
 
 - **C1** `tokens.css` is the only file defining CSS custom properties; others consume.
-- **C2** CSS load order in `index.html`: `tokens.css → layout.css → components.css` (I3 leans on
-  this — the order IS an invariant for the calendar-grid rule, a convention otherwise).
+- **C2** CSS load order in `index.html`: `tokens.css → base.css → layout.css → components.css →
+  forms.css → motion.css` (I3 leans on this — the order IS an invariant for the calendar-grid
+  rule, a convention otherwise).
 - **C3** Each JS module: `defer`, one concern, no shared globals, markup contact only via
-  `data-*` hooks. *Sole sanctioned exception (MC 3934.3 c2):* `js/gallery-manifest.js` declares
-  the read-only `window.ANNY_GALLERY_IMAGES` inventory, loaded before `gallery.js` (defer order)
-  and only ever read by it — the no-404 photo seam replacing the v1 HEAD-probe. *Not a module:* a
+  `data-*` hooks. *Exception RETIRED 2026-11-10 (MC 12367):* the read-only
+  `window.ANNY_GALLERY_IMAGES` inventory (`js/gallery-manifest.js` → `js/gallery.js`) left the
+  tree with the theme-27 port — the four photos are now confirmed on disk and ship as served
+  `<img>` with srcset, so the no-404 swap seam has nothing left to guard. C3 has no exceptions.
+  *Not a module:* a
   `<script type="application/ld+json">` data-block in `head` (SEO) carries no code and no `defer`,
   so C3's defer/module rule does not apply to it (MC 10024.1).
 - **C4** Calendar markup follows the Hotell shell shape (single `.calendar-grid`-style container;
@@ -131,3 +137,13 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
 - 2026-10-03 MC 10024.1 (DA-c6 F4) — `hosting.yaml` title/description synkade till den shippeda
   SEO-headen (commit f4fd762): deklarationsträngarna är byte-exakt lika `index.html`-`<title>`
   respektive `meta[name=description]`, så reconcilerns indexkopia == sidans kopia.
+- 2026-11-10 MC 12367 (branch `session/hero-anny-27`) — tema-27-porten ("Salongens rytm") på
+  publicerad content-canon: designvärlden byts (stone-monokrom → paper/spruce/copper, två
+  mättade scener), `css/`-splitten blir tokens→base→layout→components→forms→motion (C2 uppd),
+  `js/scroll-reveal.js`→`js/rytm.js` (hero-ordbygge pensionerat, hero-andning tar över),
+  `js/gallery*.js`+manifest plockas bort (verkliga foton serveras direkt med srcset — C3:
+  undantaget pensionerat), `derived/` tillkommer (maskingenererad breddtrappa), galleriet blir
+  före/efter-VÄGG med ärliga tom-rum för saknade bilder, hero bär Boka + tel-länk + IG-pointer
+  (ägare-ratificerat), kontaktformuläret märks `Demo — skickas inte` synligt innan användning.
+  Innanvarande: publicerad textordlöst bevarad (tjänster, kontaktvärden, demo-markeringar);
+  head-sektionen (title/description/OG/canonical/JSON-LD/favicon) byte-stabil.

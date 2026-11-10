@@ -1,142 +1,101 @@
-/* tokens.css — design tokens ONLY (invariant C1: the one file defining custom
- * properties; every other stylesheet consumes these). Values + WCAG checks:
- * DESIGN.md "TOKENS". Light mode default, dark via prefers-color-scheme. */
+/* tokens.css — the one token block (invariant C1). Every colour literal in this
+ * build lives in the :root rule below; nothing outside :root names a colour.
+ * Design language: fleet theme 27 "Salongens rytm" (MC 12367, 2026-11-10) — the
+ * palette/rhythm/type roles are ported from it; the scene-tint values are RE-tuned
+ * against the site's REAL photos (not the theme's placeholders) via the quality
+ * gate's composited contrast + focus-indicator probes.
+ * CSS load order (invariant C2): tokens -> base -> layout -> components -> forms -> motion. */
 
 :root {
-  /* ---- Backgrounds (warm stone ramp) ---- */
-  --bg-primary:    #ffffff;
-  --bg-secondary:  #fafaf9;
-  --bg-tertiary:   #f5f5f4;
+  /* — palette: spruce + copper + sand families, brass accent, paper ground, ink — */
+  --paper: #f6f1e8;          /* the single paper ground */
+  --paper-2: #ece4d6;        /* sand tone: light fills, alternating beat, demo-taken slot */
+  --rule: #d8cbb6;           /* sand hairline rules */
+  --ink: #201a15;            /* warm near-black */
+  --ink-soft: #4a4038;       /* secondary ink on paper only */
+  --spruce-deep: #14332b;    /* scene 1 ground (hero) */
+  --spruce: #1d473c;         /* links, active states, mirror-frame line on light */
+  --spruce-mist: #dce7de;    /* light spruce: secondary text on dark */
+  --copper-deep: #7c3a17;    /* CTA fill, eyebrows, focus on light grounds */
+  --copper: #a4552b;         /* copper mid: hover of copper-deep */
+  --brass: #d9a05b;          /* accent: micro-labels and focus on dark scenes */
+  --closer-ground: #5c2d14;  /* scene 2 ground (kontakt + footer) — hue-swapped bookend */
+  --scene-tint: #120f0c;     /* the solid ink tint layer behind scene text */
+  --scene-tint-hero: 0.55;   /* hero tint — set from the REAL-photo contrast probe (gate 1.2.0) */
+  --scene-tint-scene: 0.68;  /* closer-scene tint + dialog backdrop */
+  --scene-photo: 0.60;       /* effective photo presence behind hero type */
+  --danger: #b91c1c;         /* field-error border/text — distinct from the focus ring */
 
-  --surface:        #ffffff;
-  --surface-hover:  #fafaf9;
-  --surface-active: #f5f5f4;
+  /* — breakpoint vocabulary: the four declared bands named as px tokens.
+     A @media condition cannot read var(), so THIS block is the machine-readable
+     vocabulary: every media px in the sheets equals one of these tokens or
+     token − 0.1 (the .9 cap). — */
+  --bp-b2: 600px;            /* B2 lower bound; B1 upper bound = 599.9px */
+  --bp-b3: 900px;            /* B3 lower bound; B2 upper bound = 899.9px */
+  --bp-b4: 1200px;           /* B4 lower bound; B3 upper bound = 1199.9px */
+  --bp-far: 10000px;         /* declared fall-off cap; B4 upper bound = 9999.9px */
 
-  /* ---- Borders ---- */
-  --border-subtle:  #e7e5e4;
-  --border-default: #d6d3d1;
-  --border-strong:  #a8a29e;   /* decorative/borders only — 2.52:1, never text */
+  /* — type roles: display / body / micro-label, sizes as N × the root multiplier — */
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "DejaVu Serif", serif;
+  --font-body: Optima, "Segoe UI", system-ui, "DejaVu Sans", sans-serif;
+  --root: 16.4px;                            /* band B1 — the single multiplier */
+  --fs-h1: calc(3.15 * var(--root));
+  --fs-h2: calc(1.9 * var(--root));
+  --fs-h3: calc(1.18 * var(--root));
+  --fs-lede: calc(1.18 * var(--root));
+  --fs-body: var(--root);
+  --fs-micro: calc(0.85 * var(--root));      /* never below ~13.9 px in any band */
+  --lh-display: 1.08;
+  --lh-body: 1.7;
+  --lh-micro: 1.45;
+  --tr-display: -0.012em;
+  --tr-micro: 0.14em;
 
-  /* ---- Text (AA-checked on white / bg-secondary, see DESIGN.md) ---- */
-  --text-primary:   #1c1917;   /* 17.49:1 */
-  --text-secondary: #57534e;   /*  7.63:1 */
-  --text-tertiary:  #78716c;   /*  4.80:1 */
-  --text-inverse:   #fafaf9;
+  /* — spacing rhythm: two declared values, ratio honoured — */
+  --space-intra: 24px;                       /* inside a beat */
+  --space-inter: 64px;                       /* between beats */
+  --pad-scene: calc(2 * var(--space-inter)); /* scene air = 128 px = 2× inter */
+  --pad-cta-v: calc(var(--space-intra) / 2);
+  --pad-card: var(--space-intra);
+  --pad-card-sm: calc(var(--space-intra) / 2);
 
-  /* ---- Accent — the ONE chromatic color in chrome ---- */
-  --accent:         #9a3f1f;   /* 6.76:1 on white; white on it 6.76:1 */
-  --accent-hover:   #6f3417;   /* 9.64:1 */
-  --accent-ink:     #ffffff;   /* text on --accent */
-  --accent-surface: rgba(154, 63, 31, 0.08);
-  --focus-ring:     #9a3f1f;
+  /* — geometry (layout, not rhythm) — */
+  --wrap: 1100px;
+  --wrap-narrow: 660px;
+  --min-hero: 70vh;
+  --min-closer: 60vh;
+  --frame-offset: 3px;                       /* the one mirror-frame motif */
+  --ring-offset: 3px;
+  --radius: 2px;
 
-  /* ---- Error state (field-error border) — deliberately distinct from
-   * --focus-ring so focus and error never look alike. ---- */
-  --danger:         #b91c1c;   /* 6.47:1 on white — AA text, ≥3:1 UI boundary */
+  /* — z — */
+  --z-header: 20;
+  --z-skip: 30;
 
-  /* ---- Mock-calendar slot states (AA-checked, see DESIGN.md) ---- */
-  --slot-free-bg:   #e7e5e4;   /* + text-primary = 13.93:1 */
-  --slot-free-bg-hover: #d6d3d1;
-  --slot-taken-bg:  #44403c;   /* + #fafaf9 = 9.84:1 */
-  --slot-taken-fg:  #fafaf9;
+  /* — motion budget: reveal / hero-andning / sticky-skalm / dialog-lyft — */
+  --dur-reveal: 600ms;
+  --delay-1: 120ms;                          /* the second and last delay value */
+  --dur-quick: 160ms;
+  --dur-breath: 24s;
+  --ease-rytm: cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  /* ---- Typography (system fonts only — offline rule, no CDN) ---- */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-               "Helvetica Neue", Arial, sans-serif;
-  --font-display: Georgia, "Iowan Old Style", "Times New Roman", serif;
-
-  --text-xs:   12.8px;
-  --text-sm:   16px;
-  --text-md:   20px;
-  --text-lg:   25px;
-  --text-xl:   31.2px;
-  --text-2xl:  39.1px;
-  --text-hero: clamp(39px, 8vw, 76px);
-
-  --lh-tight:   1.2;
-  --lh-normal:  1.45;
-  --lh-relaxed: 1.5;
-  --lh-cozy:    1.55;
-
-  --font-normal:   400;
-  --font-medium:   500;
-  --font-semibold: 600;
-  --font-bold:     700;
-
-  /* ---- Spacing (4px base) ---- */
-  --space-1:  0.25rem;
-  --space-2:  0.5rem;
-  --space-3:  0.75rem;
-  --space-4:  1rem;
-  --space-5:  1.25rem;
-  --space-6:  1.5rem;
-  --space-8:  2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --space-24: 6rem;
-  --stack-gap: var(--space-4);
-
-  /* ---- Radii + shadows ---- */
-  --radius-sm:   0.25rem;
-  --radius-md:   0.375rem;
-  --radius-lg:   0.5rem;
-  --radius-xl:   0.75rem;
-  --radius-full: 9999px;
-
-  --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.05);
-  --shadow-md: 0 2px 6px rgba(28, 25, 23, 0.07);
-  --shadow-lg: 0 4px 16px rgba(28, 25, 23, 0.12);
-
-  /* ---- Z ---- */
-  --z-header: 40;
-  --z-dialog: 100;
-
-  /* ---- Layout constants ---- */
-  --container-max: 1120px;
-  --header-h: 64px;
-
-  /* ---- Booking calendar matrix (declared here so the grid template in
-   * components.css stays the ONLY track declaration — invariant I3). ---- */
+  /* — booking calendar matrix (declared here so the grid template in
+     components.css stays the ONLY track declaration — invariant I3). — */
   --cal-slot-w: clamp(88px, 7rem, 120px);
-  --cal-col-min: 64px;
+  /* floor fits the longest published cell label ("Demo-upptagen") whole: the
+     matrix never hyphen-wraps (nowrap labels) — .cal-wrap scrolls instead (I3) */
+  --cal-col-min: 140px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-primary:    #0c0a09;
-    --bg-secondary:  #1c1917;
-    --bg-tertiary:   #292524;
-
-    --surface:        #1c1917;
-    --surface-hover:  #292524;
-    --surface-active: #44403c;
-
-    --border-subtle:  #292524;
-    --border-default: #44403c;
-    --border-strong:  #57534e;
-
-    --text-primary:   #f5f5f4;   /* 18.11:1 */
-    --text-secondary: #d6d3d1;   /* 13.26:1 */
-    --text-tertiary:  #a8a29e;   /*  7.83:1 */
-    --text-inverse:   #1c1917;
-
-    --accent:         #fb923c;   /* 8.73:1 on bg */
-    --accent-hover:   #fdba74;
-    --accent-ink:     #1c1917;
-    --accent-surface: rgba(251, 146, 60, 0.14);
-    --focus-ring:     #fb923c;
-
-    --danger:         #f87171;   /* 6.32:1 on --surface #1c1917 — AA */
-
-    --slot-free-bg:   #44403c;
-    --slot-free-bg-hover: #57534e;
-    --slot-taken-bg:  #292524;
-    --slot-taken-fg:  #a8a29e;   /* 6.02:1 on --slot-taken-bg #292524 (AA); 7.83:1 is vs bg-primary */
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
-    --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45);
-    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.55);
-  }
+/* Hard four-band breakpoints: discrete, non-overlapping, .9 px upper bounds.
+   Every px here equals a --bp-* token above or token − 0.1 (the vocabulary the
+   gate reads). The type ladder resteps here only — band steps 0.6 px, each ≤ 0.9. */
+@media (min-width: 600px) and (max-width: 899.9px) {
+  :root { --root: 17px; }
+}
+@media (min-width: 900px) and (max-width: 1199.9px) {
+  :root { --root: 17.5px; }
+}
+@media (min-width: 1200px) and (max-width: 9999.9px) {
+  :root { --root: 18px; }
 }

@@ -1,0 +1,49 @@
+/* forms.css — one concern: the contact form controls (fields, validation
+ * states, honest status box). There is no backend (the form is a labelled
+ * demo); the pending-note copy lives in js/contact-form.js, the states here. */
+
+.contact-form { display: grid; gap: var(--space-intra); max-width: 58ch; margin-top: var(--space-intra); }
+
+.field { display: grid; gap: var(--pad-cta-v); }
+
+.field label {
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--spruce);
+}
+
+.field input,
+.field textarea {
+  font: inherit;
+  font-size: var(--fs-body);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--spruce);
+  border-radius: var(--radius);
+  padding: var(--pad-cta-v) var(--pad-card-sm);
+  width: 100%;
+}
+
+.field textarea { min-height: calc(4 * var(--lh-body) * 1em); resize: vertical; }
+
+.field input:hover,
+.field textarea:hover { border-color: var(--copper-deep); }
+
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"] { border-color: var(--danger); }
+
+.field-error {
+  font-size: var(--fs-micro);
+  line-height: var(--lh-micro);
+  color: var(--danger);
+}
+
+.form-status {
+  border: 1px solid var(--spruce);
+  background: var(--paper-2);
+  border-radius: var(--radius);
+  padding: var(--pad-card-sm) var(--pad-card);
+  max-width: 58ch;
+}

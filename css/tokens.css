@@ -72,11 +72,15 @@
   --z-header: 20;
   --z-skip: 30;
 
-  /* — motion budget: reveal / hero-andning / sticky-skalm / dialog-lyft — */
+  /* — motion budget: reveal / hero-andning / sticky-skalm / dialog-lyft /
+     mikro-djup (CSS) + hero-siden (js/hero-3d.js, WebGL, its own inertness
+     under reduced motion is coded in the module) — */
   --dur-reveal: 600ms;
   --delay-1: 120ms;                          /* the second and last delay value */
   --dur-quick: 160ms;
   --dur-breath: 24s;
+  --dur-lyft: 220ms;                         /* mikro-djup: the card hover tilt */
+  --lyft-skugga: rgba(32, 26, 21, 0.20);     /* hover-lift shadow: ink at 20 % — the literal lives only here (C1) */
   --ease-rytm: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   /* — booking calendar matrix (declared here so the grid template in

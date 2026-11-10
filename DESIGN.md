@@ -1,17 +1,27 @@
 # DESIGN — Anny Morin, Frisör Karlskrona
 
-2026-11-10 · MC 12367 · frontend-build (branch `session/hero-anny-27`). This version
-SUPERSEDES the 2026-10-03 MC 3934.3 spec (its stone-monochrome world lives on only in git
+2026-11-10 · MC 12373 · frontend (branch `session/hero-anny-3d`). This version SUPERSEDES
+the hero section only of the 2026-11-10 MC 12367 spec below: hero v2 replaces the photo wash
+with a zero-asset WebGL silk-light scene (`js/hero-3d.js`, family "hero-siden"); every other
+section, token and the content canon are unchanged from it. The hero's former
+photo-wash description below is kept as the NO-JS / NO-WEBGL fallback contract — that is
+still exactly what renders when scripts or WebGL are absent.
+
+2026-11-10 · MC 12367 · frontend-build (branch `session/hero-anny-27`). That version
+SUPERSEDED the 2026-10-03 MC 3934.3 spec (its stone-monochrome world lives on only in git
 history). Design language: fleet theme **27 "Salongens rytm"**
 (`~/Hemsidor/projects/salong/prototypes/27-salongens-rytm`, read-only), ported onto the
 published Anny/Mullers content canon. All legibility numbers are the ones the workflow-webdesign
-quality gate 1.4.0 measured on THIS candidate (composited-pixel contrast + focus-indicator
-probes), not hand-computed pairs — see `.audits/202611101228-hero27/out/QUALITY-candidate.md`.
+quality gate measured on the candidates (composited-pixel contrast + focus-indicator
+probes), not hand-computed pairs — see `.audits/202611101228-hero27/out/QUALITY-candidate.md`
+and the MC 12373 gate evidence beside this card.
 
 ## DIRECTION
 
 "Salongens rytm": a paper ground, spruce + copper + sand, one brass accent, and two
-saturated scenes bookending the page — the hero over the salon's own photo (scene 1), the
+saturated scenes bookending the page — the hero carrying its own woven silk-light in the
+scene colours (scene 1; the salon's own photo stays beneath it wherever scripts or WebGL do
+not run), the
 contact channels on the copper closer-ground (scene 2). The mirror-frame motif is the only
 ornament. The content is the published site verbatim: five services with prices `–` until the
 owner confirms, the demo booking mock that never confirms anything, the contact form labelled
@@ -51,10 +61,17 @@ Single scroll, beats in the theme's rhythm (`Hero → Om → Tjänster → Galle
 Meddelande → Kontakt-scen → footer`), sticky paper shell; below the 600 px band only the
 wordmark + Boka stay in the shell and the footer carries the full list.
 
-- **Hero (scene 1)** — photo wash (gal-01, the site's own photo) + solid tint; eyebrow + h1
-  + lede; the owner-ratified ask row: **Boka tid** (to `#boka`) with the **live tel link**
-  beside it, and the Instagram pointer as the only trust signal. CSS-only Ken Burns
-  ("hero-andning"), no JS.
+- **Hero (scene 1) — v2 (MC 12373):** the centrepiece is a zero-asset WebGL silk-light
+  scene (`js/hero-3d.js`): 24 depth layers of slowly flowing hair/silk strands lit by an
+  anisotropic (Kajiya-Kay style) highlight, all colours read from the token block — the JS
+  names no colour literal. Subtle pointer-eased light/parallax, IntersectionObserver pause
+  offscreen, first draw behind the recorded first-contentful-paint;
+  `prefers-reduced-motion` gets ONE static frame and zero rAF. Without JS or WebGL (or on a
+  context loss) the canvas silently never shows, and the static hero underneath — photo wash
+  (gal-01) + solid tint, CSS-only Ken Burns ("hero-andning") — is exactly the MC 12367 hero.
+  Text layout is untouched: the canvas is absolute (measured zero layout jump). The ask row
+  is the owner-ratified one: **Boka tid** (to `#boka`) with the **live tel link** beside it,
+  and the Instagram pointer as the only trust signal.
 - **Om mig** — prose canon verbatim; the portrait photo still does not exist, so the frame
   shows the honest `tom-rum` state ("Porträtt — bild kommer") — never a fake stand-in.
 - **Tjänster** — five published services, texts verbatim, price rows `Pris … –` with the
@@ -75,15 +92,20 @@ wordmark + Boka stay in the shell and the footer carries the full list.
 - **Kontakt (scene 2 + footer bookend)** — real owner-supplied values on the copper
   closer-ground: telefon `tel:` + e-post `mailto:` + Instagram + address; öppettider stays
   "(bekräftas snart)" (I1).
-- **Motion budget (4 families, motion.css):** reveal (IO, `.js-motion`-gated), hero-andning
-  (CSS), sticky-skalm (CSS), dialog-lyft (CSS). All from-states sit behind BOTH
+- **Motion budget (5 CSS families + 1 WebGL family):** reveal (IO, `.js-motion`-gated),
+  hero-andning
+  (CSS), sticky-skalm (CSS), dialog-lyft (CSS), mikro-djup (CSS-only card hover tilt,
+  MC 12373). All from-states sit behind BOTH
   `prefers-reduced-motion: no-preference` and `.js-motion`; no JS or reduced motion ⇒ the
-  page simply sits in its end state. No scroll handlers, no rAF, no scrub tweens.
+  page simply sits in its end state. No scroll handlers, no scrub tweens; the page's one
+  rAF loop is `js/hero-3d.js` ("hero-siden"), IO-paused offscreen and coded inert under
+  reduced motion (one static frame, zero rAF calls — measured).
 
 ## FILES
 
 `index.html` · css `tokens → base → layout → components → forms → motion` (C2 order) ·
-js `rytm.js` (reveal) + `booking-mock.js` + `contact-form.js` · `images/` (owner photos,
+js `rytm.js` (reveal) + `booking-mock.js` + `contact-form.js` + `hero-3d.js` (hero-siden,
+MC 12373) · `images/` (owner photos,
 byte-exact) · `derived/` (machine-generated srcset ladder — regenerate, never hand-edit) ·
 `data-*` hooks only; JS `defer`; no globals (C3 — the manifest exception retired with
 `gallery-manifest.js`).

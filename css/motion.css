@@ -1,8 +1,11 @@
-/* motion.css — the four declared motion families (tokens.css budget), every
- * animated from-state behind BOTH gates: `prefers-reduced-motion: no-preference`
- * AND the JS-added root class .js-motion. No JS or reduced motion => the page
- * simply sits in its end state; no content is ever hidden waiting for a script.
- * There is no window.onscroll, no rAF loop and no scrub tween in this build. */
+/* motion.css — the declared CSS motion families (tokens.css budget): reveal,
+ * hero-andning, sticky-skalm (layout.css, CSS-only), dialog-lyft, mikro-djup.
+ * Every animated from-state behind BOTH gates: `prefers-reduced-motion:
+ * no-preference` AND the JS-added root class .js-motion. No JS or reduced
+ * motion => the page simply sits in its end state; no content is ever hidden
+ * waiting for a script. No window.onscroll and no scrub tween in this build;
+ * the one rAF loop lives in js/hero-3d.js (hero-siden), IO-gated offscreen
+ * and coded inert under prefers-reduced-motion (one static frame). */
 
 /* reveal — IntersectionObserver flips .in; two delay values at most (0 / --delay-1) */
 /* hero-andning — pure-CSS Ken Burns over the real photo, present without JS */
@@ -51,5 +54,23 @@
 
   .boka-dialog[open]::backdrop {
     animation: bakgrund-tag var(--dur-quick) linear;
+  }
+
+  /* mikro-djup — the service cards tilt a degree toward the viewer and lift a
+     shadow on hover: CSS-only perspective (no pointer-tracking JS touches the
+     cards), user-initiated, never on load. The second selector out-specifies
+     the revealed-reveal rule (.js-motion [data-reveal].in) so the tilt still
+     applies after a card has appeared. Reduced motion never reaches this
+     block, so the cards stay flat there. */
+  .tjanst {
+    transition:
+      transform var(--dur-lyft) var(--ease-rytm),
+      box-shadow var(--dur-lyft) var(--ease-rytm);
+  }
+
+  .tjanst:hover,
+  .js-motion .tjanst[data-reveal]:hover {
+    transform: perspective(700px) rotateX(1.5deg) translateY(-2px);
+    box-shadow: 0 14px 28px -18px var(--lyft-skugga);
   }
 }

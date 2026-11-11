@@ -18,6 +18,9 @@ Genereras om från originalen (PIL LANCZOS, exif_transpose, quality 82, progress
                 f"images/gal-0{n}-w{tw}.jpeg","JPEG",quality=82,optimize=True,progressive=True)
     PY
 
+Porträttet (`images/anny-portratt.jpeg`, ägarlevererat 2026-11-11) har bara en variant
+(`anny-portratt-w384.jpeg`) — källan är 414 px bred och vi ska aldrig uppskala.
+
 Innehållet är en transformerad kopia av ägarbilderna — samma sekretessregel som för
 originalen gäller: filerna hör bara hemma i det här repo (bryn1/anny), aldrig i
 bryn1/Webdesign eller något offentligt ställe.

@@ -29,7 +29,7 @@ Project intent: real site, frontend-first — backend explicitly deferred (below
 | `js/rytm.js` | reveal-koreografin (IntersectionObserver, en klass-flipp; ingen scroll-handler, inget rAF) — ärvt från tema 27 `rytm.js` |
 | `js/booking-mock.js` | "Boka tid"-kalender MOCK (Hotell-mönster, se Reuse); CTA telefon/IG; oförändrad sedan 2026-10-02 |
 | `js/contact-form.js` | klientvalidering + väntande-tillstånd; ingen dispatch; oförändrad |
-| `images/` | ägarlevererade foton `gal-01`–`gal-04` (provens i `images/README.md`, byte-exakta kopior); serveras direkt i markup med srcset; kvarvarande platshållarslots 5–6 + porträtt visas som tom-tillstånd (`tom-rum`) |
+| `images/` | ägarlevererade foton `gal-01`–`gal-04` + porträtt `anny-portratt` (levererat av ägaren 2026-11-11); serveras direkt i markup med srcset; kvarvarande galleriplatshållarslots 5–6 visas som tom-tillstånd (`tom-rum`) |
 | `images/gal-0N-wW.jpeg` | maskingenererad srcset-trappa (bredder 384/768/1152) fran `images/gal-0N.jpeg` — genereras om via `docs/derived-ladder.md`, redigeras ej |
 | `DESIGN.md` (rot) | design-spec DIRECTION/TOKENS/LAYOUT — tema-27-porten 2026-11-10 |
 | `hosting.yaml` (rot) | vm106-hostningdeklaration (strict JSON, statisk — ingen port); konsumeras av fleet-reconcilern, laddas EJ av sajten |

@@ -72,8 +72,9 @@ wordmark + Boka stay in the shell and the footer carries the full list.
   Text layout is untouched: the canvas is absolute (measured zero layout jump). The ask row
   is the owner-ratified one: **Boka tid** (to `#boka`) with the **live tel link** beside it,
   and the Instagram pointer as the only trust signal.
-- **Om mig** — prose canon verbatim; the portrait photo still does not exist, so the frame
-  shows the honest `tom-rum` state ("Porträtt — bild kommer") — never a fake stand-in.
+- **Om mig** — prose canon verbatim; the frame carries Anny's portrait, delivered by the
+  owner 2026-11-11 (`images/anny-portratt`, srcset served) — before delivery it showed the
+  honest `tom-rum` state; a fake stand-in was never used.
 - **Tjänster** — five published services, texts verbatim, price rows `Pris … –` with the
   pending-owner-confirmation comments kept in markup (I1).
 - **Galleri** — the fore/efter WALL (the 2026-10-03 horizontal scroller retired): the four

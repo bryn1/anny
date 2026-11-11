@@ -77,8 +77,8 @@ wordmark + Boka stay in the shell and the footer carries the full list.
 - **Tjänster** — five published services, texts verbatim, price rows `Pris … –` with the
   pending-owner-confirmation comments kept in markup (I1).
 - **Galleri** — the fore/efter WALL (the 2026-10-03 horizontal scroller retired): the four
-  real photos served directly with `width`/`height` + `srcset` (derived widths in
-  `derived/`); captions carry the published tags/titles only ("Före/Efter", "Långt blont",
+  real photos served directly with `width`/`height` + `srcset` (derived widths as
+  `gal-0N-wW.jpeg` under `images/`; regenerate recipe `docs/derived-ladder.md`); captions carry the published tags/titles only ("Före/Efter", "Långt blont",
   "Kortare blont"). The two slots without delivered photos (Bal, Skäggtrim) show the
   dashed `tom-rum` empty state — the JS manifest-swap seam retired with it (photos are now
   confirmed on disk; the served markup says what exists).
@@ -106,6 +106,6 @@ wordmark + Boka stay in the shell and the footer carries the full list.
 `index.html` · css `tokens → base → layout → components → forms → motion` (C2 order) ·
 js `rytm.js` (reveal) + `booking-mock.js` + `contact-form.js` + `hero-3d.js` (hero-siden,
 MC 12373) · `images/` (owner photos,
-byte-exact) · `derived/` (machine-generated srcset ladder — regenerate, never hand-edit) ·
+byte-exact) · `images/gal-0N-wW.jpeg` srcset ladder (machine-generated — regenerate via `docs/derived-ladder.md`, never hand-edit) ·
 `data-*` hooks only; JS `defer`; no globals (C3 — the manifest exception retired with
 `gallery-manifest.js`).

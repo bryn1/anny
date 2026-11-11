@@ -30,7 +30,7 @@ Project intent: real site, frontend-first — backend explicitly deferred (below
 | `js/booking-mock.js` | "Boka tid"-kalender MOCK (Hotell-mönster, se Reuse); CTA telefon/IG; oförändrad sedan 2026-10-02 |
 | `js/contact-form.js` | klientvalidering + väntande-tillstånd; ingen dispatch; oförändrad |
 | `images/` | ägarlevererade foton `gal-01`–`gal-04` (provens i `images/README.md`, byte-exakta kopior); serveras direkt i markup med srcset; kvarvarande platshållarslots 5–6 + porträtt visas som tom-tillstånd (`tom-rum`) |
-| `derived/` | maskingenererad srcset-trappa (`gal-0N-wW.jpeg`, bredder 384/768/1152) från `images/` — genereras om, redigeras ej, jamais handarbete |
+| `images/gal-0N-wW.jpeg` | maskingenererad srcset-trappa (bredder 384/768/1152) fran `images/gal-0N.jpeg` — genereras om via `docs/derived-ladder.md`, redigeras ej |
 | `DESIGN.md` (rot) | design-spec DIRECTION/TOKENS/LAYOUT — tema-27-porten 2026-11-10 |
 | `hosting.yaml` (rot) | vm106-hostningdeklaration (strict JSON, statisk — ingen port); konsumeras av fleet-reconcilern, laddas EJ av sajten |
 | `robots.txt` (rot) | crawl-deklaration för sökmotorer (endast `User-agent: *` + `Allow: /`, ingen Sitemap-rad — en sida); server under `/anny/robots.txt`, konsumeras EJ av sajten |
@@ -54,7 +54,7 @@ between checks.
 ## Data stores
 
 None. No server, no database, no localStorage/cookies. All state is in-memory page state;
-gallery photos live as served markup over `images/`+`derived/`, mock availability as a static
+gallery photos live as served markup over `images/` (original + srcset-trappa), mock availability as a static
 data structure inside `booking-mock.js`.
 
 ## Backend — DEFERRED (future modules, not built now)
@@ -142,7 +142,7 @@ Conventions (violation = style): ~250/400-line file budgets; Swedish copy; `data
   mättade scener), `css/`-splitten blir tokens→base→layout→components→forms→motion (C2 uppd),
   `js/scroll-reveal.js`→`js/rytm.js` (hero-ordbygge pensionerat, hero-andning tar över),
   `js/gallery*.js`+manifest plockas bort (verkliga foton serveras direkt med srcset — C3:
-  undantaget pensionerat), `derived/` tillkommer (maskingenererad breddtrappa), galleriet blir
+  undantaget pensionerat), srcset-trappan ligger i `images/` (maskingenererad, rekcept `docs/derived-ladder.md`), galleriet blir
   före/efter-VÄGG med ärliga tom-rum för saknade bilder, hero bär Boka + tel-länk + IG-pointer
   (ägare-ratificerat), kontaktformuläret märks `Demo — skickas inte` synligt innan användning.
   Innanvarande: publicerad textordlöst bevarad (tjänster, kontaktvärden, demo-markeringar);
